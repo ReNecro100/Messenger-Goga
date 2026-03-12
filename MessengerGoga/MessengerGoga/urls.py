@@ -25,7 +25,6 @@ from django.urls import path
 from messages import views
  
 urlpatterns = [
-    path('', views.goga, name='goga'),
+    path('', views.reg, name='reg'),
     path('secret', views.secret, name='secret'),
-    path('reg', views.reg, name='reg'),
 ]

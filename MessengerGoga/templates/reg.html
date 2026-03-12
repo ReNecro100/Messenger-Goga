@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <title>Document</title>
+</head>
+<body>
+    <div class="regbox">
+        <div class="name">no way</div>
+        <div class="name">Who am I?</div>
+    </div>
+</body>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+}
+
+.regbox {
+    width: 300px;
+    height: 500px;
+    padding: 20px;
+    background: white;
+    border: 1px solid gray;
+    border-radius: 8px;
+}
+
+.name {
+    text-align: center;
+    font-size: 24px;
+    color: black;
+}
+
+.name:first-child {
+    margin-bottom: 10px;
+}
+</style>
+</html>
