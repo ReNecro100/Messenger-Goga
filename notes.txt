@@ -1,0 +1,39 @@
+django-admin startproject MessengerGoga
+
+python main.py
+
+pip install Django
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+venv\scripts\activate
+
+python manage.py makemigrations
+
+python MessengerGoga\manage.py runserver
+                                makemigrations
+                                migrate
+
+
+
+Рассмотрим вкратце его структуру:
+
+папка migrations: предназначена для хранения миграций - скриптов, которые 
+позволяют синхронизировать структуру базы данных с определением моделей
+
+__init__.py: указывает интерпретатору python, что текущий каталог 
+будет рассматриваться в качестве пакета
+
+admin.py: предназначен для административных функций, 
+в частности, здесь призводится регистрация моделей, которые 
+используются в интерфейсе администратора
+
+apps.py: определяет конфигурацию приложения
+
+models.py: хранит определение моделей, которые 
+описывают используемые в приложении данные
+
+tests.py: хранит тесты приложения
+
+views.py: определяет функции, которые получают 
+запросы пользователей, обрабатывают их и возвращают ответ
