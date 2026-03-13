@@ -74,9 +74,20 @@ WSGI_APPLICATION = 'MessengerGoga.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'OPTIONS': {
+            'options': '-c search_path=MessengerGoga,public'
+        },
+        'NAME': '21P_25_Olshevskii',
+        'USER': '21P',
+        'PASSWORD': '123',
+        'HOST': 'ngknn.ru',
+        'PORT': '5442',
     }
 }
 

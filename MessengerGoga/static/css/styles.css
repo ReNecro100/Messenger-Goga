@@ -1,1 +1,57 @@
 /* Ничего не работает!!! */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+}
+
+.regbox {
+    width: 400px;
+    height: 350px;
+    padding: 20px;
+    background: white;
+    border: 1px solid gray;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    font-size: 18px;
+    color: black;
+}
+
+.appname {
+    text-align: center;
+    font-size: 32px;
+    color: black;
+    font-weight: bold;
+}
+
+.regbox * {
+    margin-bottom: 10px;
+}
+.appname{
+    margin-bottom: 30px;
+}
+.label{
+    font-size: 18px;
+    color: black;
+}
+
+#password{
+    margin-bottom: 30px;
+}
+
+button{
+    height: 2rem;
+}

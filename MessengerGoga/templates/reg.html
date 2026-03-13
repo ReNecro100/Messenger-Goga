@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,43 +9,13 @@
 </head>
 <body>
     <div class="regbox">
-        <div class="name">no way</div>
-        <div class="name">Who am I?</div>
+        <div class="appname">Мессенджер Георгий</div>
+        <div class="label">Никнейм</div>
+        <input type="email" id="name">
+        <div class="label">Пароль</div>
+        <input type="password" id="password">
+        <button type="submit" class="regbutton">Зарегестрироваться</button>
+        <button type="submit" class="logbutton">Войти</button>
     </div>
 </body>
-<style>
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background: #f0f0f0;
-}
-
-.regbox {
-    width: 300px;
-    height: 500px;
-    padding: 20px;
-    background: white;
-    border: 1px solid gray;
-    border-radius: 8px;
-}
-
-.name {
-    text-align: center;
-    font-size: 24px;
-    color: black;
-}
-
-.name:first-child {
-    margin-bottom: 10px;
-}
-</style>
 </html>
