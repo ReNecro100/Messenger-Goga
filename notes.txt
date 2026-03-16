@@ -3,6 +3,7 @@ django-admin startproject MessengerGoga
 python main.py
 
 pip install Django
+pip install psycopg2
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
@@ -15,6 +16,8 @@ python MessengerGoga\manage.py runserver
                                 migrate
 
 python manage.py runserver
+
+python -m venv venv
 
 
 

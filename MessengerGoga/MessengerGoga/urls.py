@@ -22,9 +22,9 @@ Including another URLconf
 # ]
 
 from django.urls import path
-from messages import views
+from talking import views
  
 urlpatterns = [
     path('', views.reg, name='reg'),
-    path('secret', views.secret, name='secret'),
+    path('goga', views.goga, name='goga'),
 ]

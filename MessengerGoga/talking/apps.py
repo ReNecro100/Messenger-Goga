@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class RegConfig(AppConfig):
-    name = 'messages'
+    name = 'talking'

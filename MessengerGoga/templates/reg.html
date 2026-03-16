@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-    <title>Document</title>
+    <title>Регистрация и вход</title>
 </head>
 <body>
     <div class="regbox">
         <div class="appname">Мессенджер Георгий</div>
-        <div class="label">Никнейм</div>
-        <input type="email" id="name">
-        <div class="label">Пароль</div>
-        <input type="password" id="password">
-        <button type="submit" class="regbutton">Зарегестрироваться</button>
-        <button type="submit" class="logbutton">Войти</button>
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="regbutton">Зарегестрироваться</button>
+            <button type="submit" class="logbutton">Войти</button>
+        </form>
     </div>
 </body>
 </html>
