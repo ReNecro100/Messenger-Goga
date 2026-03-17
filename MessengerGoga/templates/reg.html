@@ -1,21 +1,121 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <title>Регистрация и вход</title>
 </head>
 <body>
+    {% if messages %}
+    <ul class="messages" style="position: absolute; top: 0; left: 0; background: red; color: white; z-index: 9999;">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div class="regbox">
         <div class="appname">Мессенджер Георгий</div>
-        <form method="post">
+        <form method="post" autocomplete="off">
             {% csrf_token %}
             {{ form }}
-            <button type="submit" class="regbutton">Зарегестрироваться</button>
-            <button type="submit" class="logbutton">Войти</button>
+            <button type="submit" name="reg">Зарегестрироваться</button>
+            <button type="submit" name="log">Войти</button>
         </form>
     </div>
 </body>
+<!-- <style>
+    /* АХАЛАЙ-МАХАЛАЙ ЦСС ИЗЫДИ!!! */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+}
+
+.messages {
+    list-style: none;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.messages li {
+    padding: 1em;
+    width: 100%;
+    line-height: 2.0em;
+    border-radius: 4px; /* Optional: for rounded corners */
+}
+
+.messages li.info {
+    background-color: #d0ebff; /* Light blue background for info */
+    color: #084298; /* Darker blue text */
+}
+
+.messages li.success {
+    background-color: #b2f2bb; /* Light green background for success */
+    color: #0f5132; /* Darker green text */
+}
+
+.messages li.warning {
+    background-color: #ffec99; /* Light yellow background for warning */
+    color: #664d03; /* Darker yellow text */
+}
+
+.messages li.error {
+    background-color: #ffe3e3; /* Light red background for error */
+    color: #842029; /* Darker red text */
+}
+
+.regbox {
+    width: 400px;
+    height: 350px;
+    padding: 20px;
+    background: white;
+    border: 1px solid gray;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    font-size: 18px;
+    color: black;
+}
+
+.appname {
+    text-align: center;
+    font-size: 32px;
+    color: black;
+    font-weight: bold;
+}
+
+.regbox * {
+    margin-bottom: 10px;
+}
+.appname{
+    margin-bottom: 30px;
+}
+.label{
+    font-size: 18px;
+    color: black;
+}
+
+#password{
+    margin-bottom: 30px;
+}
+
+button{
+    height: 2rem;
+}
+</style> -->
 </html>

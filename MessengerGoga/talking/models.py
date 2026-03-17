@@ -4,12 +4,16 @@ from django.db import models
 class User(models.Model):
     name = models.CharField(
         max_length=32,
-        verbose_name="Имя"
+        verbose_name="Имя",
+        blank=False,
+        unique=True
     )
 
     password = models.CharField(
         max_length=32,
-        verbose_name="Пароль"
+        verbose_name="Пароль",
+        blank=False,
+        unique=True
     )
 
     creation_date = models.DateTimeField(
