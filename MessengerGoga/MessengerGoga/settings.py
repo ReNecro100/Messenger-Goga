@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#Idk lol
+AUTH_USER_MODEL = 'talking.User'
 
 # Application definition
 
@@ -125,9 +127,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")

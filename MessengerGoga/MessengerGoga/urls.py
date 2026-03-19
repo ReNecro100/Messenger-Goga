@@ -25,6 +25,6 @@ from django.urls import path
 from talking import views
  
 urlpatterns = [
-    path('', views.reg, name='reg'),
-    path('goga', views.goga, name='goga'),
+    path('enter', views.reg, name='enter'),
+    path('room', views.chatroom, name='room'),
 ]

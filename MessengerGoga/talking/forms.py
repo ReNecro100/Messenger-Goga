@@ -5,14 +5,16 @@ from .models import User
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['name', 'password']
-        name = forms.CharField(
-            label = "Your name", 
-            max_length=32,
-            widget=forms.TextInput(attrs={'autocomplete': 'off'})
+        fields = ['username', 'email','password']
+        username = forms.CharField(
+            label = "Твой юзернейм", 
+            max_length=150
             )
+        email = forms.CharField(
+            label="Твоё мыло"
+        )
         password = forms.CharField(
-            label = "Your password", 
-            max_length=32,
-            widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'})
+            label = "Твой пароль", 
+            max_length=32
             )
+        
