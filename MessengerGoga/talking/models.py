@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User as UserModel
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 # class User(models.Model):
@@ -26,16 +26,16 @@ from django.contrib.auth.models import User as UserModel
 #         verbose_name="Описание", 
 #         blank=True
 #     )
-class User(UserModel):
+class User(AbstractUser):
     #username
     #password
     #date_joined
-    description = description = models.TextField(
+    description =models.TextField(
         verbose_name="Описание", 
         default=""
     )
 
-class Chats(models.Model):
+class Chat(models.Model):
     name = models.CharField(
         max_length=32,
         verbose_name="Название",
@@ -48,7 +48,7 @@ class Chats(models.Model):
         verbose_name="Дата создания"
     )
 
-    description = description = models.TextField(
+    description = models.TextField(
         verbose_name="Описание", 
         blank=True
     )
@@ -56,8 +56,8 @@ class Chats(models.Model):
     # Связь с автором (внешний ключ)
     chat_creator = models.ForeignKey(
         'User', 
-        on_delete=models.CASCADE,  # При удалении автора удаляются все его книги
-        related_name='talkinb',  # Обратная связь: author.books.all()
+        on_delete=models.CASCADE,
+        related_name='chat_creator',
         verbose_name="Создатель чата"
     )
 
@@ -68,17 +68,17 @@ class Chats(models.Model):
         blank=False
     )
 
-class ChatMessages(models.Model):
+class ChatMessage(models.Model):
     user = models.ForeignKey(
         'User', 
         on_delete=models.CASCADE,  # При удалении автора удаляются все его книги
-        related_name='talking',  # Обратная связь: author.books.all()
+        related_name='message_sender',  # Обратная связь: author.books.all()
         verbose_name="Автор"
     )
     chat = models.ForeignKey(
-        Chats, 
+        Chat, 
         on_delete=models.CASCADE,  # При удалении автора удаляются все его книги
-        related_name='talking',  # Обратная связь: author.books.all()
+        related_name='message_chat',  # Обратная связь: author.books.all()
         verbose_name="Чат"
     )
     sending_date = models.DateTimeField(

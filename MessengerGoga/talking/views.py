@@ -32,15 +32,8 @@ def reg(request):
                 user = form.save()
                 form = UserForm()
                 messages.success(request, f'Теперь нужно залогиниться!')
-        if 'log' in request.POST:
-            # nm = request.POST.get('name')
-            # psswrd = request.POST.get('password')
-            # if User.objects.filter(name=nm, password=psswrd).exists():
-            #     return redirect('room')
-            # else:
-            #     messages.error(request, 'Неверное имя пользователя или пароль!')
-            #     form = UserForm()
-            username = request.POST["name"]
+        elif 'log' in request.POST:
+            username = request.POST["username"]
             password = request.POST["password"]
             user = authenticate(request, username=username, password=password)
             if user is not None:
@@ -48,7 +41,7 @@ def reg(request):
                 return redirect('room')
             else:
                 messages.error(request, 'Неверное имя пользователя или пароль!')
-                form = UserForm()
+                form = UserForm(request.POST)
     else:
         # GET запрос - создаем пустую форму
         form = UserForm()
