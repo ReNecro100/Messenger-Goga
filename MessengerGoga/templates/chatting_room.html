@@ -7,13 +7,24 @@
 </head>
 <body>
     <div class="messages-area">
+        {% csrf_token %}
         <p>tut buduj pojavliatsa chat-soobschenija</p>
+
+        {% for msg in msgs %}
+        <div class="chatmessage">
+            {{msg.message_words}}
+        </div>
+        {% endfor %}
     </div>
     <div class="chats">
-        <p>Zdesj poka nichego net</p>
+        
     </div>
     <div class="writing-field">
-        <p>Sozdaj tut formu, skotobazina ty takaja!!!</p>
+        <form method="post" autocomplete="off">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" name="reg">Отправить</button>
+        </form>
     </div>
     <div class="stickers">
         <p>Zdesj poka nichego net</p>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import User
-from .forms import UserForm
+from .models import User, ChatMessage
+from .forms import UserForm, ChatMessageForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
@@ -11,7 +11,21 @@ from django.http import HttpResponse
   
 @login_required(redirect_field_name="enter", login_url='enter')
 def chatroom(request):
-    return render(request, 'chatting_room.html')
+    if request.method == 'POST':
+        form = ChatMessageForm(request.POST)
+        if form.is_valid():
+            # Сохраняем сообщение
+            msg = form.save(request)
+            messages.success(request, f'Youve got mail!')
+    else:
+        form = ChatMessageForm()
+    return render(request, 'chatting_room.html', {'form': form, 'msgs': ChatMessage.objects.all()})
+
+def root_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('room')
+    else:
+        return redirect('enter')
 
 def secret(request):
     return HttpResponse("Как ты сюда попал???")

@@ -25,6 +25,7 @@ from django.urls import path
 from talking import views
  
 urlpatterns = [
+    path('', views.root_redirect, name='root'),
     path('enter', views.reg, name='enter'),
     path('room', views.chatroom, name='room'),
 ]
