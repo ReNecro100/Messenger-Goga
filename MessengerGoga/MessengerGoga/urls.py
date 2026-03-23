@@ -28,4 +28,5 @@ urlpatterns = [
     path('', views.root_redirect, name='root'),
     path('enter', views.reg, name='enter'),
     path('room', views.chatroom, name='room'),
+    path('wsschat/<str:room_name>', views.webhook_test, name='wsschat')
 ]
