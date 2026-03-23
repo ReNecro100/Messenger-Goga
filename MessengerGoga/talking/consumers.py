@@ -6,8 +6,6 @@ from channels.generic.websocket import WebsocketConsumer
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        print("URL route:", self.scope.get("url_route"))
-        print("Kwargs:", self.scope["url_route"].get("kwargs"))
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 

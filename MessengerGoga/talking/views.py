@@ -23,7 +23,8 @@ def chatroom(request):
 
 @login_required(redirect_field_name="enter", login_url='enter')
 def webhook_test(request, room_name):
-    return render(request, "wsschat.html", {"room_name": room_name})
+    print(request.user.username)
+    return render(request, "wsschat.html", {"room_name": room_name, 'msgs': ChatMessage.objects.all(), 'itsname': request.user.username})
 
 def root_redirect(request):
     if request.user.is_authenticated:
