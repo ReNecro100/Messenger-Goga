@@ -8,27 +8,14 @@ from django.contrib.auth import authenticate, login
 # Create your views here.
 
 from django.http import HttpResponse
-  
-@login_required(redirect_field_name="enter", login_url='enter')
-def chatroom(request):
-    if request.method == 'POST':
-        form = ChatMessageForm(request.POST)
-        if form.is_valid():
-            msg = form.save(request)
-            messages.success(request, f'Youve got mail!')
-            form = ChatMessageForm()
-    else:
-        form = ChatMessageForm()
-    return render(request, 'chatting_room.html', {'form': form, 'msgs': ChatMessage.objects.all()})
 
 @login_required(redirect_field_name="enter", login_url='enter')
-def webhook_test(request, room_name):
-    print(request.user.username)
+def wsschat(request, room_name):
     return render(request, "wsschat.html", {"room_name": room_name, 'msgs': ChatMessage.objects.all(), 'itsname': request.user.username})
 
 def root_redirect(request):
     if request.user.is_authenticated:
-        return redirect('room')
+        return redirect('wsschat/1')
     else:
         return redirect('enter')
 
