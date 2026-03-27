@@ -7,6 +7,9 @@
 </head>
 <body>
     <!-- <textarea id="chat-log" cols="100" rows="20"></textarea><br> -->
+     <div class="stickers">
+        <p>Tebia zovut vot tak -> {{ itsname }}</p>
+    </div>
     <div class="messages-area">  
         <!-- tut soobschenija -->
         {% for msg in msgs %}
@@ -39,13 +42,11 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            // document.querySelector('#chat-log').value += (data.message + '\n');
             const newDiv = document.createElement('div');
 
             // 2. Customize the div (optional)
             newDiv.className = 'chat-message';
-            newDiv.textContent = user+": "+data.message; // Add text content
-            newDiv.style.backgroundColor = 'lightblue'; // Add a CSS style
+            newDiv.textContent = data.username+": "+data.message; // Add text content
 
             // 3. Append the new div to the body
             document.body.querySelector('.messages-area').appendChild(newDiv);
@@ -66,7 +67,8 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'username': user
             }));
             messageInputDom.value = '';
         };

@@ -44,7 +44,7 @@ def reg(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('room')
+                return redirect('wsschat/1')
             else:
                 messages.error(request, 'Неверное имя пользователя или пароль!')
                 form = UserForm(request.POST)
@@ -52,4 +52,4 @@ def reg(request):
         # GET запрос - создаем пустую форму
         form = UserForm()
     
-    return render(request, 'reg.html', {'form': form})
+    return render(request, "reg.html", {"form": form})
