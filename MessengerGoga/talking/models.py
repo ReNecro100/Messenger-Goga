@@ -1,31 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
-# class User(models.Model):
-#     name = models.CharField(
-#         max_length=32,
-#         verbose_name="Имя",
-#         blank=False,
-#         unique=True
-#     )
 
-#     password = models.CharField(
-#         max_length=32,
-#         verbose_name="Пароль",
-#         blank=False,
-#         unique=True
-#     )
-
-#     creation_date = models.DateTimeField(
-#         auto_now=True,
-#         verbose_name="Дата создания"
-#     )
-
-#     description = description = models.TextField(
-#         verbose_name="Описание", 
-#         blank=True
-#     )
 class User(AbstractUser):
     #username
     #password
@@ -61,11 +37,20 @@ class Chat(models.Model):
         verbose_name="Создатель чата"
     )
 
-    #Чат - 1, ЛС - 2, Канал - 3
-    ChatDMChannel = models.CharField( 
-        max_length=1,
-        verbose_name="Чат, лс или канал",
-        blank=False
+    #Чат, лс, канал
+    chat_type = models.ForeignKey(
+        'ChatType', 
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name="Тип чата"
+    )
+
+class ChatType(models.Model):
+    name = models.CharField(
+        max_length=32,
+        verbose_name="Название",
+        blank=False,
+        unique=True
     )
 
 class ChatMessage(models.Model):

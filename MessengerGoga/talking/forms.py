@@ -1,6 +1,6 @@
 # Импорт модуля форм Django и моделей Author и Book
 from django import forms
-from .models import User, ChatMessage, Chat
+from .models import User, ChatMessage, Chat, ChatType
 
 class UserFormRegistration(forms.ModelForm): #Ещё будут UserFormLogin и UserFormEdit
     username = forms.CharField(
@@ -28,7 +28,7 @@ class UserFormRegistration(forms.ModelForm): #Ещё будут UserFormLogin и
 class UserFormLogin(forms.ModelForm): #Ещё будет UserFormEdit
     username = forms.CharField(
         label = "Твой юзернейм", 
-        max_length=150
+        max_length=32
         )
     password = forms.CharField(
         label = "Твой пароль", 
@@ -38,6 +38,32 @@ class UserFormLogin(forms.ModelForm): #Ещё будет UserFormEdit
     class Meta:
         model = User
         fields = ['username', 'password']
+
+class ChatForm(forms.ModelForm):
+    name = forms.CharField(
+        label="Название чата",
+        max_length=32
+    )
+    description = forms.CharField(
+        label="Описание",
+        max_length=128
+    )
+    chat_type = forms.ModelChoiceField(
+        queryset=ChatType.objects.all(),  # Все авторы из базы данных
+        label='Тип чата',
+        empty_label="Выбери тип чата",  # Значение по умолчанию
+    )
+
+    class Meta:
+        model = Chat
+        fields = ['name', 'description']
+
+    def save(request, self, commit=True):
+        lechat = super().save(commit=False)
+        lechat.chat_creator = self.user
+        if commit:
+            lechat.save()
+        return lechat
 
 class ChatMessageForm(forms.ModelForm):
     message_words = forms.CharField(
