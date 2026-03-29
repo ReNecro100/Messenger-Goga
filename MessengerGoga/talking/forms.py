@@ -2,14 +2,11 @@
 from django import forms
 from .models import User, ChatMessage, Chat
 
-class UserForm(forms.ModelForm):
+class UserFormRegistration(forms.ModelForm): #Ещё будут UserFormLogin и UserFormEdit
     username = forms.CharField(
         label = "Твой юзернейм", 
         max_length=150
         )
-    email = forms.CharField(
-        label="Твоё мыло"
-    )
     password = forms.CharField(
         label = "Твой пароль", 
         max_length=32,
@@ -17,7 +14,7 @@ class UserForm(forms.ModelForm):
         )
     class Meta:
         model = User
-        fields = ['username', 'email','password']
+        fields = ['username', 'password']
     def save(self, commit=True):
         user = super().save(commit=False)
     
@@ -27,6 +24,20 @@ class UserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+class UserFormLogin(forms.ModelForm): #Ещё будет UserFormEdit
+    username = forms.CharField(
+        label = "Твой юзернейм", 
+        max_length=150
+        )
+    password = forms.CharField(
+        label = "Твой пароль", 
+        max_length=32,
+        widget=forms.PasswordInput
+        )
+    class Meta:
+        model = User
+        fields = ['username', 'password']
 
 class ChatMessageForm(forms.ModelForm):
     message_words = forms.CharField(

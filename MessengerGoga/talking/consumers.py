@@ -41,7 +41,6 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def chat_message(self, event):
-        print(event)
         message = event["message"]
         username = event["username"]
 

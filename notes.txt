@@ -1,9 +1,21 @@
+Тестовые пользователи (Имя - Пароль):
+Test - Test
+MicrosoftEdge - 1o2o3o4o
+Django - Django
+newUser - newUser
+
+Задачи:
++ Разделить регистрацию и логин
+Сделать форму для создания чата
+Сделать форму для редактирования аккаунта
+Сделать форму для редактирования чата
+Сделать удаление чата
+
 django-admin startproject MessengerGoga
 
 python main.py
 
-pip install Django
-pip install psycopg2
+pip install requirements.txt
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 

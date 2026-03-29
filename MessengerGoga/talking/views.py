@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import User, ChatMessage
-from .forms import UserForm, ChatMessageForm
+from .forms import UserFormRegistration, UserFormLogin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
@@ -17,7 +17,7 @@ def root_redirect(request):
     if request.user.is_authenticated:
         return redirect('wsschat/1')
     else:
-        return redirect('enter')
+        return redirect('log')
 
 def secret(request):
     return HttpResponse("Как ты сюда попал???")
@@ -28,28 +28,40 @@ def reg(request):
     GET: отображает пустую форму
     POST: сохраняет автора и перенаправляет на список авторов
     """
-    request.session.set_expiry(1209600)
     if request.method == 'POST':
-        if 'reg' in request.POST:
-            # Создаем форму с данными POST
-            form = UserForm(request.POST)
-            if form.is_valid():
-                # Сохраняем автора
-                user = form.save()
-                form = UserForm()
-                messages.success(request, f'Теперь нужно залогиниться!')
-        elif 'log' in request.POST:
-            username = request.POST["username"]
-            password = request.POST["password"]
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('wsschat/1')
-            else:
-                messages.error(request, 'Неверное имя пользователя или пароль!')
-                form = UserForm(request.POST)
+        # Создаем форму с данными POST
+        form = UserFormRegistration(request.POST)
+        if form.is_valid():
+            # Сохраняем автора
+            user = form.save()
+            form = UserFormRegistration()
+            messages.success(request, f'Теперь нужно залогиниться!')
+            return redirect('log')
     else:
         # GET запрос - создаем пустую форму
-        form = UserForm()
+        form = UserFormRegistration()
     
     return render(request, "reg.html", {"form": form})
+
+def log(request):
+    """
+    Обрабатывает создание нового автора.
+    GET: отображает пустую форму
+    POST: сохраняет автора и перенаправляет на список авторов
+    """
+    request.session.set_expiry(1209600)
+    if request.method == 'POST':
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('wsschat/1')
+        else:
+            messages.error(request, 'Неверное имя пользователя или пароль!')
+            form = UserFormLogin(request.POST)
+    else:
+        # GET запрос - создаем пустую форму
+        form = UserFormLogin()
+    
+    return render(request, "log.html", {"form": form})

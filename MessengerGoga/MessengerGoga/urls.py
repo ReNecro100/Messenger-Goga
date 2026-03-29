@@ -26,6 +26,7 @@ from talking import views
  
 urlpatterns = [
     path('', views.root_redirect, name='root'),
-    path('enter', views.reg, name='enter'),
+    path('reg', views.reg, name='reg'),
+    path('log', views.log, name='log'),
     path('wsschat/<str:room_name>', views.wsschat, name='wsschat')
 ]

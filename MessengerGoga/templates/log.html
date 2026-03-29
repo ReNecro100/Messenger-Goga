@@ -16,11 +16,11 @@
     </ul>
     {% endif %}
     <div class="regbox">
-        <div class="appname">Зарегестрируйся!</div>
+        <div class="appname">Войди в свой аккаунт!</div>
         <form method="post" autocomplete="off">
             {% csrf_token %}
             {{ form }}
-            <button type="submit" name="reg">Зарегестрироваться</button>
+            <button type="submit" name="log">Войти</button>
         </form>
     </div>
 </body>
