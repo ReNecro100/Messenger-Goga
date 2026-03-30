@@ -6,9 +6,10 @@ from .forms import ChatMessageForm
 from django.contrib.auth.decorators import login_required
 
 
-#Mozhet asinhronnym sdelatj, a?
+#Mozhet asinhronnym sdelatj, a? Ta ne, zachem
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
+        print(self.scope)
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.user = self.scope["user"]
         self.room_group_name = f"chat_{self.room_name}"

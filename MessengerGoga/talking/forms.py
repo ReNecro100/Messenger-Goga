@@ -45,23 +45,24 @@ class ChatForm(forms.ModelForm):
         max_length=32
     )
     description = forms.CharField(
+        required=False,
         label="Описание",
-        max_length=128
+        max_length=128,
     )
     chat_type = forms.ModelChoiceField(
-        queryset=ChatType.objects.all(),  # Все авторы из базы данных
+        queryset=ChatType.objects.all(),
         label='Тип чата',
         empty_label="Выбери тип чата",  # Значение по умолчанию
     )
 
     class Meta:
         model = Chat
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'chat_type']
 
     def save(request, self, commit=True):
         lechat = super().save(commit=False)
         lechat.chat_creator = self.user
-        if commit:
+        if commit and lechat.chat_type.name!="ЛС":
             lechat.save()
         return lechat
 
@@ -75,7 +76,7 @@ class ChatMessageForm(forms.ModelForm):
         fields = ['message_words']
     def save(request, self, commit=True):
         msg = super().save(commit=False)
-        msg.chat = Chat.objects.get(id=2)
+        msg.chat = Chat.objects.get(self.scope["url_route"]["kwargs"]["room_name"])
         msg.user = self.user
         if commit:
             msg.save()

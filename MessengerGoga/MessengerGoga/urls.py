@@ -28,5 +28,6 @@ urlpatterns = [
     path('', views.root_redirect, name='root'),
     path('reg', views.reg, name='reg'),
     path('log', views.log, name='log'),
+    path('newchat', views.new_chat, name='newchat'),
     path('wsschat/<str:room_name>', views.wsschat, name='wsschat')
 ]

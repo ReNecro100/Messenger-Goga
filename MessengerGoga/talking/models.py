@@ -41,7 +41,6 @@ class Chat(models.Model):
     chat_type = models.ForeignKey(
         'ChatType', 
         on_delete=models.CASCADE,
-        null=True,
         verbose_name="Тип чата"
     )
 
@@ -50,8 +49,11 @@ class ChatType(models.Model):
         max_length=32,
         verbose_name="Название",
         blank=False,
+        default=1,
         unique=True
     )
+    def __str__(self):
+        return self.name
 
 class ChatMessage(models.Model):
     user = models.ForeignKey(
