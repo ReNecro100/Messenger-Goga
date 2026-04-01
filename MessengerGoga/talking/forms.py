@@ -62,6 +62,7 @@ class ChatForm(forms.ModelForm):
     def save(request, self, commit=True):
         lechat = super().save(commit=False)
         lechat.chat_creator = self.user
+
         if commit and lechat.chat_type.name!="ЛС":
             lechat.save()
         return lechat

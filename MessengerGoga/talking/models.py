@@ -44,6 +44,12 @@ class Chat(models.Model):
         verbose_name="Тип чата"
     )
 
+    members = models.ManyToManyField(
+        "User", 
+        related_name='member_of',
+        verbose_name="Участники"
+    )
+
 class ChatType(models.Model):
     name = models.CharField(
         max_length=32,

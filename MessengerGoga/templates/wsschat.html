@@ -8,10 +8,10 @@
 <body>
     <!-- <textarea id="chat-log" cols="100" rows="20"></textarea><br> -->
      <div class="upname">
-        <p>Nazvanije chata -> {{ current_chat.name }}</p>
+        <p>Nazvanije chata -> {{ current_chat.name }}, Kolichestvo uchastnikov - {{ members_count }}</p>
      </div>
      <div class="stickers">
-        <p>Tebia zovut vot tak -> {{ itsname }}</p>
+        <p>Tebia zovut vot tak -> {{ current_user.username }}</p>
     </div>
     <div class="messages-area">  
         <!-- tut soobschenija -->
@@ -21,27 +21,36 @@
         </div>
         {% endfor %}  
     </div>
-    {% if current_chat.chat_type.name != "Канал" %}
+    {% if current_chat.chat_type.name != "Канал" or current_user.id == current_chat.chat_creator.id %}
         <input id="chat-message-input" type="text" size="100"><br>
         <input id="chat-message-submit" type="button" value="Send">
     {% endif %}
     <div>
         <a href="{% url 'newchat' %}">Создать новый чат</a>
-    </div>   
+    </div>
     {{ room_name|json_script:"room-name" }}
-    {{ itsname|json_script:"itsname" }}
+    {{ current_user.username|json_script:"itsname" }}
     <div class="chats">
         <div class="messages-area">  
         <!-- tut soobschenija -->
         {% for my_chat in my_chats %}
-        <div class="chat-message", style="margin: 1rem;">
-            <a href="{% url 'wsschat' my_chat.id %}">{{my_chat.chat_type.name}} {{my_chat.name}} ({{my_chat.description}})</a>
+        <div class="chat-message">
+            <a href="{% url 'wsschat' my_chat.id %}">- {{my_chat.chat_type.name}} {{my_chat.name}} ({{my_chat.description}})</a>
         </div>
         {% endfor %}  
+        </div>
     </div>
+    <div class="non-members-area">
+        <p>Добавить пользователя в чат</p>
+        {% for non_member in non_members %}
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="non_member" value="{{ non_member.id }}">!!!Пользователь {{non_member.username}}</button>
+        </form>
+        {% endfor %}  
     </div>
     <div class="stickers">
-        <p>Zdesj poka nichego net</p>
+        <p>Stikery - Zdesj poka nichego net</p>
     </div>
     <style>
         a, a:visited, a:hover, a:active {color: black; text-decoration: none;}
