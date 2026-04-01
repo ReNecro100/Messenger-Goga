@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание нового чата</title>
+</head>
+<body>
+    {% if messages %}
+    <ul class="messages" id="messages" style="position: absolute; top: 0; left: 0; background: red; color: white; z-index: 9999;">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <div class="appname">Редактируй свой профиль!</div>
+        <form method="post" autocomplete="off">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" name="log">Сохранить!</button>
+        </form>
+</body>
+</html>

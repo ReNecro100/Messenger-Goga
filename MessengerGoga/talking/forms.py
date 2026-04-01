@@ -2,7 +2,7 @@
 from django import forms
 from .models import User, ChatMessage, Chat, ChatType
 
-class UserFormRegistration(forms.ModelForm): #Ещё будут UserFormLogin и UserFormEdit
+class UserFormReg(forms.ModelForm):
     username = forms.CharField(
         label = "Твой юзернейм", 
         max_length=150
@@ -25,7 +25,7 @@ class UserFormRegistration(forms.ModelForm): #Ещё будут UserFormLogin и
             user.save()
         return user
     
-class UserFormLogin(forms.ModelForm): #Ещё будет UserFormEdit
+class UserFormLogin(forms.ModelForm):
     username = forms.CharField(
         label = "Твой юзернейм", 
         max_length=32
@@ -38,6 +38,31 @@ class UserFormLogin(forms.ModelForm): #Ещё будет UserFormEdit
     class Meta:
         model = User
         fields = ['username', 'password']
+
+class UserFormEdit(forms.ModelForm):
+    username = forms.CharField(
+        label = "Твой юзернейм", 
+        max_length=150
+        )
+    description = forms.CharField(
+        label = "Твоё описание"
+        )
+    class Meta:
+        model = User
+        fields = ['username', 'description']
+    # def save(self, commit=True):
+    #     user = super().save(commit=False)
+    
+    #     # Хэшируем пароль!
+    #     user.set_password(self.cleaned_data['password'])
+    
+    #     if commit:
+    #         user.save()
+    #     return user
+
+
+
+
 
 class ChatForm(forms.ModelForm):
     name = forms.CharField(
@@ -66,6 +91,10 @@ class ChatForm(forms.ModelForm):
         if commit and lechat.chat_type.name!="ЛС":
             lechat.save()
         return lechat
+
+
+
+
 
 class ChatMessageForm(forms.ModelForm):
     message_words = forms.CharField(

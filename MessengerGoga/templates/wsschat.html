@@ -27,6 +27,10 @@
     {% endif %}
     <div>
         <a href="{% url 'newchat' %}">Создать новый чат</a>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="delete_chat" value="{{ current_chat.id }}">Удалить чат</button>
+        </form>
     </div>
     {{ room_name|json_script:"room-name" }}
     {{ current_user.username|json_script:"itsname" }}
