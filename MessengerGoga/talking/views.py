@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import User, ChatMessage
+from .models import User, ChatMessage, Chat
 from .forms import UserFormRegistration, UserFormLogin, ChatForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -11,7 +11,13 @@ from django.http import HttpResponse
 
 @login_required(redirect_field_name="enter", login_url='enter')
 def wsschat(request, room_name):
-    return render(request, "wsschat.html", {"room_name": room_name, 'msgs': ChatMessage.objects.all(), 'itsname': request.user.username})
+    return render(request, "wsschat.html", {
+        "room_name": room_name,
+        'msgs': ChatMessage.objects.filter(chat=int(room_name)), 
+        'itsname': request.user.username, 
+        'current_chat': Chat.objects.get(id=int(room_name)),
+        'my_chats': Chat.objects.all()
+    })
 
 @login_required(redirect_field_name="enter", login_url='enter')
 def new_chat(request):
@@ -22,7 +28,7 @@ def new_chat(request):
             # Сохраняем автора
             lechat = form.save(request)
             form = ChatForm()
-            return redirect(f'wsschat/{lechat.chat_type.id}')
+            return redirect(f'wsschat/{lechat.id}')
     else:
         # GET запрос - создаем пустую форму
         form = ChatForm()
@@ -30,7 +36,7 @@ def new_chat(request):
 
 def root_redirect(request):
     if request.user.is_authenticated:
-        return redirect('wsschat/1')
+        return redirect('wsschat/2')
     else:
         return redirect('log')
 
@@ -71,7 +77,7 @@ def log(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('wsschat/1')
+            return redirect('wsschat/2')
         else:
             messages.error(request, 'Неверное имя пользователя или пароль!')
             form = UserFormLogin(request.POST)

@@ -76,7 +76,7 @@ class ChatMessageForm(forms.ModelForm):
         fields = ['message_words']
     def save(request, self, commit=True):
         msg = super().save(commit=False)
-        msg.chat = Chat.objects.get(self.scope["url_route"]["kwargs"]["room_name"])
+        msg.chat = Chat.objects.get(id=self.scope["url_route"]["kwargs"]["room_name"])
         msg.user = self.user
         if commit:
             msg.save()

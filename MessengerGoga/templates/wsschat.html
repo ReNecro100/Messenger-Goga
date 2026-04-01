@@ -7,6 +7,9 @@
 </head>
 <body>
     <!-- <textarea id="chat-log" cols="100" rows="20"></textarea><br> -->
+     <div class="upname">
+        <p>Nazvanije chata -> {{ current_chat.name }}</p>
+     </div>
      <div class="stickers">
         <p>Tebia zovut vot tak -> {{ itsname }}</p>
     </div>
@@ -18,19 +21,31 @@
         </div>
         {% endfor %}  
     </div>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
+    {% if current_chat.chat_type.name != "Канал" %}
+        <input id="chat-message-input" type="text" size="100"><br>
+        <input id="chat-message-submit" type="button" value="Send">
+    {% endif %}
     <div>
         <a href="{% url 'newchat' %}">Создать новый чат</a>
     </div>   
     {{ room_name|json_script:"room-name" }}
     {{ itsname|json_script:"itsname" }}
     <div class="chats">
-        <p>Zdesj poka nichego net</p>
+        <div class="messages-area">  
+        <!-- tut soobschenija -->
+        {% for my_chat in my_chats %}
+        <div class="chat-message", style="margin: 1rem;">
+            <a href="{% url 'wsschat' my_chat.id %}">{{my_chat.chat_type.name}} {{my_chat.name}} ({{my_chat.description}})</a>
+        </div>
+        {% endfor %}  
+    </div>
     </div>
     <div class="stickers">
         <p>Zdesj poka nichego net</p>
     </div>
+    <style>
+        a, a:visited, a:hover, a:active {color: black; text-decoration: none;}
+    </style>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const user = JSON.parse(document.getElementById('itsname').textContent);
