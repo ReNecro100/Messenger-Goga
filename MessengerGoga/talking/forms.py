@@ -45,7 +45,8 @@ class UserFormEdit(forms.ModelForm):
         max_length=150
         )
     description = forms.CharField(
-        label = "Твоё описание"
+        label = "Твоё описание",
+        required = False
         )
     class Meta:
         model = User
@@ -64,14 +65,14 @@ class UserFormEdit(forms.ModelForm):
 
 
 
-class ChatForm(forms.ModelForm):
+class ChatFormCreate(forms.ModelForm):
     name = forms.CharField(
         label="Название чата",
         max_length=32
     )
     description = forms.CharField(
         required=False,
-        label="Описание",
+        label="Описание чата",
         max_length=128,
     )
     chat_type = forms.ModelChoiceField(
@@ -92,7 +93,19 @@ class ChatForm(forms.ModelForm):
             lechat.save()
         return lechat
 
-
+class ChatFormEdit(forms.ModelForm):
+    name = forms.CharField(
+        label="Название чата",
+        max_length=32
+    )
+    description = forms.CharField(
+        required=False,
+        label="Описание чата",
+        max_length=128,
+    )
+    class Meta:
+        model = Chat
+        fields = ['name', 'description']
 
 
 

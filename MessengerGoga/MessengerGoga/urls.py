@@ -29,6 +29,7 @@ urlpatterns = [
     path('reg', views.reg, name='reg'),
     path('log', views.log, name='log'),
     path('newchat', views.new_chat, name='newchat'),
-    path('wsschat/<str:room_name>', views.wsschat, name='wsschat'),
-    path('edituser/<str:userid>', views.edit_user, name='edituser')
+    path('wsschat/<int:room_name>', views.wsschat, name='wsschat'),
+    path('edituser/<int:userid>', views.edit_user, name='edituser'),
+    path('editchat/<int:chatid>', views.edit_chat, name='editchat')
 ]

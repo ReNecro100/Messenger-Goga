@@ -24,11 +24,7 @@
         </form>
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" name="log_out">Выйти из профиля</button>
-        </form>
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" name="delete_user" value="{{ current_chat.id }}">Удалить пользователя!</button>
+            <button type="submit" name="delete_chat">Удалить чат</button>
         </form>
 </body>
 </html>
