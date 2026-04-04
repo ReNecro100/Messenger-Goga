@@ -103,20 +103,27 @@ def log(request):
     return render(request, "log.html", {"form": form})
 
 @login_required(redirect_field_name="enter", login_url='enter')
-def edituser(request, userid):
+def edit_user(request, userid):
     """
     Обрабатывает создание нового автора.
     GET: отображает пустую форму
     POST: сохраняет автора и перенаправляет на список авторов
     """
     user = get_object_or_404(User, pk=userid)
+    if request.user.id!=int(userid):
+        return redirect('/wsschat/2') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
     if request.method == 'POST':
-        # Создаем форму с данными POST
-        form = UserFormEdit(request.POST, instance=user)
-        if form.is_valid():
-            # Сохраняем автора
-            user = form.save()
+        if 'save' in request.POST:
+            # Создаем форму с данными POST
             form = UserFormEdit(request.POST, instance=user)
+            if form.is_valid():
+                # Сохраняем автора
+                user = form.save()
+                form = UserFormEdit(request.POST, instance=user)
+        if 'delete_user' in request.POST:
+            record = User.objects.get(id=request.user.id)
+            record.delete()
+            return redirect('/log')
     else:
         # GET запрос - создаем пустую форму
         form = UserFormEdit(instance=user)

@@ -44,6 +44,9 @@
         {% endfor %}  
         </div>
     </div>
+    <div class="chat-message">
+        <a href="{% url 'edituser' current_user.id %}">Редактировать профиль</a>
+    </div>
     <div class="non-members-area">
         <p>Добавить пользователя в чат</p>
         {% for non_member in non_members %}
@@ -97,11 +100,13 @@
         document.querySelector('#chat-message-submit').onclick = function(e) {
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
+            if (message!=""){
+                chatSocket.send(JSON.stringify({
                 'message': message,
                 'username': user
-            }));
-            messageInputDom.value = '';
+                }));
+                messageInputDom.value = '';
+            }
         };
     </script>
 </body>

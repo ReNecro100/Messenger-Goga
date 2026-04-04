@@ -81,6 +81,8 @@ class ChatMessage(models.Model):
     message_words = models.CharField(
         max_length=4096,
         verbose_name="Сообщение",
+        blank=False,
+        null=False,
     )
     message_file = models.BinaryField(
         verbose_name="Файл"
