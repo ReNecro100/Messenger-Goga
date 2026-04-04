@@ -21,6 +21,10 @@
         {% for msg in msgs %}
         <div class="chat-message">
             {{msg.user}}: {{msg.message_words}}
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="delete_msg" value="{{ msg.id }}">🗑</button>
+            </form>
         </div>
         {% endfor %}  
     </div>
@@ -77,6 +81,14 @@
             // 2. Customize the div (optional)
             newDiv.className = 'chat-message';
             newDiv.textContent = data.username+": "+data.message; // Add text content
+
+            newDiv.innerHTML = `
+            ${data.username}: ${data.message}
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="delete_msg" value="{{ ${data.id} }}">🗑</button>
+            </form>
+            `
 
             // 3. Append the new div to the body
             document.body.querySelector('.messages-area').appendChild(newDiv);
