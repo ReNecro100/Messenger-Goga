@@ -3,6 +3,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .forms import ChatMessageForm
+from .models import ChatMessage
 from django.contrib.auth.decorators import login_required
 
 
@@ -30,18 +31,41 @@ class ChatConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        #id = text_data_json["id"]
-        message = text_data_json["message"]
-        username = text_data_json["username"]
+        action = text_data_json["action"]
+        if action == 'new_message':
+            message = text_data_json["message"]
+            username = text_data_json["username"]
 
-        form = ChatMessageForm(data={'message_words': message})
-        if form.is_valid():
-            msg = form.save(self)
-        
-        # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {"type": "chat.message", "id": msg.id, "message": message, "username": username}
-        )
+            form = ChatMessageForm(data={'message_words': message})
+            if form.is_valid():
+                msg = form.save(self)
+            
+            # Send message to room group
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name, {
+                    "type": "chat_message",
+                    "action": "new_message",
+                    "id": msg.id, 
+                    "message": message, 
+                    "username": username}
+            )
+        elif action == 'delete_message':
+            message_id = text_data_json['message_id']
+            try:
+                message = ChatMessage.objects.get(id=message_id)
+                message.delete()
+                    
+                async_to_sync(self.channel_layer.group_send)(
+                        self.room_group_name, {
+                            "type": "delete_message",
+                            "action": "delete_message",
+                            "message_id": message_id
+                        }
+                    )
+            except ChatMessage.DoesNotExist:
+                print("You stupid ni")
+                
+
 
     def chat_message(self, event):
         id = event["id"]
@@ -49,4 +73,15 @@ class ChatConsumer(WebsocketConsumer):
         username = event["username"]
 
         # Send message to WebSocket
-        self.send(text_data=json.dumps({"id": id, "message": message, "username": username}))
+        self.send(text_data=json.dumps({
+            "action": event.get("action"),
+            "id": id,
+            "message": message, 
+            "username": username}))
+    
+    def delete_message(self, event):
+        self.send(text_data=json.dumps({
+            "action": event.get("action"),
+            "action": "delete_message",
+            "message_id": event["message_id"]
+        }))

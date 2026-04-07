@@ -16,12 +16,6 @@ def wsschat(request, room_name):
     if request.method == 'POST' and 'non_member' in request.POST:
         chat = Chat.objects.get(id=int(room_name))
         chat.members.add(User.objects.get(id=request.POST['non_member']))
-    if request.method == 'POST' and 'delete_msg' in request.POST:
-        try:
-            record = ChatMessage.objects.get(id=request.POST['delete_msg'])
-            record.delete()
-        except:
-            pass
     return render(request, "wsschat.html", {
         "room_name": room_name,
         'msgs': ChatMessage.objects.filter(chat=int(room_name)), 

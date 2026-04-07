@@ -20,12 +20,9 @@
         <!-- tut soobschenija -->
         {% for msg in msgs %}
         <div class="chat-message">
-            {{msg.user}}: {{msg.message_words}}
+            <p>{{msg.user}}: {{msg.message_words}}</p>
             {% if current_user.id == msg.user.id %}
-            <form method="POST">
-                {% csrf_token %}
-                <button type="submit" name="delete_msg" value="{{ msg.id }}">🗑</button>
-            </form>
+            <button class="delete-msg-btn" name="delete_msg" data-message-id="{{ msg.id }}">🗑</button>
             {% endif %}
         </div>
         {% endfor %}  
@@ -79,29 +76,56 @@
         );
 
         chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            const newDiv = document.createElement('div');
-            // 2. Customize the div (optional)
-            newDiv.className = 'chat-message';
-            
-            if(user == data.username){
-                newDiv.innerHTML = `
-            ${data.username}: ${data.message}
-            <form method="POST">
-                {% csrf_token %}
-                <button type="submit" name="delete_msg" value="${data.id}">🗑</button>
-            </form>
+    const data = JSON.parse(e.data);
+        
+    if(data.action!='delete_message'){
+        const newDiv = document.createElement('div');
+    newDiv.className = 'chat-message';
+    newDiv.setAttribute('data-message-id', data.id);
+        if(user == data.username){
+            newDiv.innerHTML = `
+                <p>${data.username}: ${data.message}</p>
+                <button class="delete-msg-btn" data-message-id="${data.id}">🗑</button>
             `
-            }
-            else{
-                newDiv.innerHTML = `
-            ${data.username}: ${data.message}
-            `
+            // Назначаем обработчик для новой кнопки
+            const deleteBtn = newDiv.querySelector('.delete-msg-btn');
+            if (deleteBtn) {
+                deleteBtn.onclick = function(e) {
+                    e.preventDefault();
+                    const messageId = this.getAttribute('data-message-id');
+                    chatSocket.send(JSON.stringify({
+                        "type": "delete_message",
+                        'action': 'delete_message',
+                        'message_id': messageId,
+                        'username': user
+                    }));
+                    
+                    // Удаляем сообщение из DOM
+                    const messageElement = this.closest('.chat-message');
+                    if (messageElement) {
+                        messageElement.remove();
+                    }
+                };
             }
 
-            // 3. Append the new div to the body
             document.body.querySelector('.messages-area').appendChild(newDiv);
-        };
+        }
+        else{
+            newDiv.innerHTML = `
+                <p>${data.username}: ${data.message}</p>
+            `
+            document.body.querySelector('.messages-area').appendChild(newDiv);
+        }
+    }
+    else{
+        // Ищем элемент по data-message-id
+        const messageElement = document.querySelector(`.chat-message[data-message-id="${data.message_id}"]`);
+        if (messageElement) {
+            messageElement.remove();
+            console.log('Сообщение удалено из DOM:', data.message_id);
+        }
+    }
+};
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
@@ -119,12 +143,28 @@
             const message = messageInputDom.value;
             if (message!=""){
                 chatSocket.send(JSON.stringify({
+                "type": "delete_message",
+                'action': 'new_message',
                 'message': message,
                 'username': user
                 }));
                 messageInputDom.value = '';
             }
         };
+
+        document.querySelector('.delete-msg-btn').onclick = function(e) {
+            const messageId = this.getAttribute('data-message-id');
+            chatSocket.send(JSON.stringify({
+                'action': 'delete_message',
+                'message_id': messageId,
+                'username': user
+            }));
+            // Удаляем сообщение из DOM
+            const messageElement = this.closest('.chat-message');
+            if (messageElement) {
+                messageElement.remove();
+            }
+        }
     </script>
 </body>
 </html>
