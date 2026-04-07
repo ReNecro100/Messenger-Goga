@@ -17,8 +17,7 @@ def wsschat(request, room_name):
         chat = Chat.objects.get(id=int(room_name))
         chat.members.add(User.objects.get(id=request.POST['non_member']))
     return render(request, "wsschat.html", {
-        "room_name": room_name,
-        'msgs': ChatMessage.objects.filter(chat=int(room_name)), 
+        "room_name": room_name, 
         'current_user': request.user, 
         'current_chat': Chat.objects.get(id=int(room_name)),
         'my_chats': request.user.member_of.all(),

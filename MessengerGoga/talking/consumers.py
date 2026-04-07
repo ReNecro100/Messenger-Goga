@@ -23,6 +23,17 @@ class ChatConsumer(WebsocketConsumer):
 
         self.accept()
 
+        msgs = ChatMessage.objects.filter(chat=int(self.room_name)).order_by('id')
+        for msg in msgs:
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name, {
+                    "type": "chat_message",
+                    "action": "history",
+                    "id": msg.id, 
+                    "message": msg.message_words, 
+                    "username": msg.user.username}
+            )
+
     def disconnect(self, close_code):
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
