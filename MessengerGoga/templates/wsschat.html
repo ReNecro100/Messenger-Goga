@@ -10,12 +10,13 @@
      <div class="upname">
         <p>Название чата/канала -> {{ current_chat.name }}, {{ members_count }} участников</p>
      </div>
-    {% if current_user.id == current_chat.chat_creator.id %}
+    
     <div>
         <a href="{% url 'newchat' %}">Создать новый чат</a>
+        {% if current_user.id == current_chat.chat_creator.id %}
         <a href="{% url 'editchat' current_chat.id %}">Редактировать чат</a>
+        {% endif %}
     </div>
-    {% endif %}
     <div class="messages-area">  
         <!-- tut soobschenija
         {% for msg in msgs %}
@@ -29,6 +30,7 @@
     </div>
     {% if current_chat.chat_type.name != "Канал" or current_user.id == current_chat.chat_creator.id %}
         <input id="chat-message-input" type="text" size="100"><br>
+        <input type="file" id="chat-file-input" name="filename">
         <input id="chat-message-submit" type="button" value="Send">
     {% endif %}
     {{ room_name|json_script:"room-name" }}
@@ -60,7 +62,7 @@
         <a href="{% url 'edituser' current_user.id %}">Редактировать профиль</a>
     </div>
     <style>
-        a, a:visited, a:hover, a:active {color: black; text-decoration: none;}
+        a, a:visited, a:hover, a:active {color: red; text-decoration: none;}
     </style>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
@@ -148,34 +150,53 @@
             }
         };
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
+        document.querySelector('#chat-message-submit').onclick = async function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input')
             const message = messageInputDom.value;
-            if (message!=""){
+            const file = document.querySelector('#chat-file-input').files[0];
+            const based64 = await toBase64(file);
+            console.log(fromBase64(based64, "image/png"));
+            if (message!="" && file!=""){
                 chatSocket.send(JSON.stringify({
                 "type": "delete_message",
                 'action': 'new_message',
                 'message': message,
-                'username': user
+                'username': user,
                 }));
                 messageInputDom.value = '';
             }
         };
 
-        // document.querySelector('.delete-msg-btn').onclick = function(e) {
-        //     const messageId = this.getAttribute('data-message-id');
-        //     chatSocket.send(JSON.stringify({
-        //         'action': 'delete_message',
-        //         'message_id': messageId,
-        //         'username': user
-        //     }));
-        //     // Удаляем сообщение из DOM
-        //     const messageElement = document.querySelector(`.chat-message[data-message-id="${messageId}"]`);
-        //     if (messageElement) {
-        //         messageElement.remove();
-        //         console.log('Message removed from DOM:', messageId);
-        //     }
-        // }
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            
+            // To się wykona, gdy plik zostanie odczytany
+            reader.onload = () => resolve(reader.result);
+            
+            // To się wykona, jeśli wystąpi błąd
+            reader.onerror = error => reject(error);
+            
+            reader.readAsDataURL(file);
+        });
+        }
+
+        function fromBase64(base64String, mimeType) {
+            // 1. Usuwamy nagłówek (np. "data:image/png;base64,"), jeśli istnieje
+            const byteString = atob(base64String.split(',')[1]);
+            
+            // 2. Tworzymy bufor na bajty
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            
+            // 3. Wypełniamy bufor danymi
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            
+            // 4. Zwracamy gotowy obiekt File
+            return new File([ab], "output.png", { type: mimeType });
+        }
 
         // Один раз - и работает для ВСЕХ кнопок (старых, новых, будущих)
     document.body.addEventListener('click', function(e) {

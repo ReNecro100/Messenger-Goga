@@ -12,7 +12,7 @@ newUser - newUser
 + Сделать удаление чата
 Сделать ЛС
 Отправка файлов
-Удаление сообщений
++ Удаление сообщений
 
 django-admin startproject MessengerGoga
 
