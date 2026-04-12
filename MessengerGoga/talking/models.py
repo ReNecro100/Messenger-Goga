@@ -84,6 +84,6 @@ class ChatMessage(models.Model):
         blank=False,
         null=False,
     )
-    message_file = models.BinaryField(
+    message_file = models.TextField(
         verbose_name="Файл"
     )

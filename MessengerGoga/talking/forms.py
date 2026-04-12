@@ -114,9 +114,13 @@ class ChatMessageForm(forms.ModelForm):
         max_length=4096,
         label="Сообщение"
     )
+
+    message_file = forms.CharField(
+        label = "FILE_INPUT"
+    )
     class Meta:
         model = ChatMessage
-        fields = ['message_words']
+        fields = ['message_words', 'message_file']
     def save(request, self, commit=True):
         msg = super().save(commit=False)
         msg.chat = Chat.objects.get(id=self.scope["url_route"]["kwargs"]["room_name"])

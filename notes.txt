@@ -10,9 +10,12 @@ newUser - newUser
 + Сделать форму для редактирования аккаунта
 + Сделать форму для редактирования чата
 + Сделать удаление чата
++ Удаление сообщений
 Сделать ЛС
 Отправка файлов
-+ Удаление сообщений
+    + Сжатие файлов
+    Отправка ТОЛЬКО слов или ТОЛЬКО фотки
+    + Убрать пустую картинку
 
 django-admin startproject MessengerGoga
 
@@ -24,16 +27,15 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 venv\scripts\activate
 
-python manage.py makemigrations
-
-python MessengerGoga\manage.py runserver
+python manage.py runserver
                                 makemigrations
                                 migrate
 
-python manage.py runserver
-
 python -m venv venv
 
+cd messengergoga
+venv\scripts\activate
+python manage.py runserver
 
 
 Рассмотрим вкратце его структуру:
