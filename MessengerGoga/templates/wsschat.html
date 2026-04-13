@@ -8,9 +8,18 @@
 </head>
 <body>
     <!-- <textarea id="chat-log" cols="100" rows="20"></textarea><br> -->
-     <div class="upname">
+    <div class="upname">
         <p>Название чата/канала -> {{ current_chat.name }}, {{ members_count }} участников</p>
-     </div>
+        <div class="members-area">
+            <p>Участники чата</p>
+            {% for member in members %}
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="member" value="{{ member.id }}">!!!Пользователь {{member.username}}</button>
+            </form>
+            {% endfor %}  
+        </div>
+    </div>
     
     <div>
         <a href="{% url 'newchat' %}">Создать новый чат</a>
@@ -47,6 +56,7 @@
         {% endfor %}  
         </div>
     </div>
+    {% if current_chat.chat_type.name != "ЛС" %}
     <div class="non-members-area">
         <p>Добавить пользователя в чат</p>
         {% for non_member in non_members %}
@@ -56,6 +66,7 @@
         </form>
         {% endfor %}  
     </div>
+    {% endif %}
     <div class="profile-info">
         <p>Информация о профиле</p>
         <p>Твоё имя -> {{ current_user.username }}</p>
