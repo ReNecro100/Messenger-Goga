@@ -85,5 +85,6 @@ class ChatMessage(models.Model):
         null=False,
     )
     message_file = models.TextField(
+        editable=True,
         verbose_name="Файл"
     )

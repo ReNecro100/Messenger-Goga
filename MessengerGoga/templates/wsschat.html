@@ -121,10 +121,10 @@
             newDiv.setAttribute('data-message-id', data.id);
             let msgFile = null
             try{
-                msgFile = decompressImage(data.message_file)
+                msgFile = data.message_file 
             }
             catch{}
-            msgFile ? console.log(msgFile.length) : console.log("ok");
+            msgFile ? console.log(msgFile.length) : console.log(data.message);
             if(user == data.username){
                 newDiv.innerHTML = `
                     <p>${data.username}: ${data.message}</p>
@@ -176,42 +176,26 @@
             const messageInputDom = document.querySelector('#chat-message-input')
             const fileInputDom = document.querySelector('#chat-file-input')
             const message = messageInputDom.value;
-            let fileToBase64 = null
+            let file = null
             try{
-                const file = fileInputDom.files[0];
-                fileToBase64 = await compressImage(file)
+                file = await compressImage(fileInputDom.files[0])
+                console.log()
             }
             catch{}
             //Сокращение
             //console.log(fileToBase64.length)
-            if (message!="" || fileToBase64!=null){
+            if (message!="" || file!=null){
                 chatSocket.send(JSON.stringify({
                     'type': "chat_message",
                     'action': 'new_message',
                     'message': message,
                     'username': user,
-                    'message_file': fileToBase64
+                    'message_file': file
                 }));
                 messageInputDom.value = '';
                 fileInputDom.value = '';
             }
         };
-
-        function toBase64(file) {
-            return new Promise((resolve, reject) => {
-
-            if (!file || file.type.split('')[0]=="image") return resolve(null);
-            const reader = new FileReader();
-            
-            // To się wykona, gdy plik zostanie odczytany
-            reader.onload = () => resolve(reader.result);
-            
-            // To się wykona, jeśli wystąpi błąd
-            reader.onerror = error => reject(error);
-            
-            reader.readAsDataURL(file);
-        });
-        }
 
         function compressImage(file, maxWidth = 640, maxHeight = 480) {
             return new Promise((resolve, reject) => {
@@ -242,10 +226,9 @@
                         canvas.height = height;
                         ctx.drawImage(img, 0, 0, width, height);
                         
-                        const dataurl = canvas.toDataURL(file.type, 0.7);
-                        const compressed = LZString.compress(dataurl);
+                        const dataurl = canvas.toDataURL(file.type, 0.5);
                         
-                        resolve(compressed);
+                        resolve(dataurl);
                     };
                     
                     img.onerror = reject;
@@ -256,50 +239,34 @@
                 reader.readAsDataURL(file);
             });
         }
-        function decompressImage(filetext){
-            return LZString.decompress(filetext)
-        }
-        function fromBase64(base64String, mimeType) {
-            // 1. Usuwamy nagłówek (np. "data:image/png;base64,"), jeśli istnieje
-            const byteString = atob(base64String.split(',')[1]);
-            
-            // 2. Tworzymy bufor na bajty
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            
-            // 3. Wypełniamy bufor danymi
-            for (let i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-            
-            // 4. Zwracamy gotowy obiekt File
-            return new File([ab], "output.png", { type: mimeType });
-        }
+        // const decompressImage = (file) => {
+        //     LZString.decompress(dataurl);
+        // };
 
         // Один раз - и работает для ВСЕХ кнопок (старых, новых, будущих)
-    document.body.addEventListener('click', function(e) {
-        // Проверяем, что кликнули по кнопке удаления
-        if (e.target.classList.contains('delete-msg-btn')) {
-            e.preventDefault();
-            
-            const messageId = e.target.getAttribute('data-message-id');
-            console.log('Delete clicked for message:', messageId);
-            
-            // Отправляем на сервер
-            chatSocket.send(JSON.stringify({
-                'action': 'delete_message',
-                'message_id': messageId,
-                'username': user
-            }));
-            
-            // Удаляем сообщение из DOM
-            const messageElement = e.target.closest('.chat-message');
-            if (messageElement) {
-                messageElement.remove();
-                console.log('Message removed from DOM:', messageId);
+        document.body.addEventListener('click', function(e) {
+            // Проверяем, что кликнули по кнопке удаления
+            if (e.target.classList.contains('delete-msg-btn')) {
+                e.preventDefault();
+                
+                const messageId = e.target.getAttribute('data-message-id');
+                console.log('Delete clicked for message:', messageId);
+                
+                // Отправляем на сервер
+                chatSocket.send(JSON.stringify({
+                    'action': 'delete_message',
+                    'message_id': messageId,
+                    'username': user
+                }));
+                
+                // Удаляем сообщение из DOM
+                const messageElement = e.target.closest('.chat-message');
+                if (messageElement) {
+                    messageElement.remove();
+                    console.log('Message removed from DOM:', messageId);
+                }
             }
-        }
-    });
+        });
     </script>
 </body>
 </html>

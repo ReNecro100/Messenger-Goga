@@ -1,6 +1,6 @@
 
 import json
-
+import base64
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .forms import ChatMessageForm
@@ -21,7 +21,7 @@ class ChatConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name, self.channel_name
         )
-
+        
         self.accept()
 
         msgs = ChatMessage.objects.filter(chat=int(self.room_name)).order_by('id')
@@ -51,16 +51,16 @@ class ChatConsumer(WebsocketConsumer):
                 message = "Изображение"
             username = text_data_json["username"]
             message_file = text_data_json["message_file"]
-            try:
-                form = ChatMessageForm(data={'message_words': message, 'message_file': message_file.encode('utf-32', 'surrogatepass')})
-            except:
+            if message_file:
+                form = ChatMessageForm(data={'message_words': message, 'message_file': message_file}) #.encode('utf-32', 'surrogatepass')
+            else:
                 form = ChatMessageForm(data={'message_words': message, 'message_file': r"\x"})
             
-            print(form.errors)
-            print(form.is_valid())
+            print(form.data)
             if form.is_valid():
                 msg = form.save(self)
                 # Send message to room group
+                print(len(msg.message_file))
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name, {
                         "type": "chat_message",

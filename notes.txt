@@ -11,11 +11,13 @@ newUser - newUser
 + Сделать форму для редактирования чата
 + Сделать удаление чата
 + Удаление сообщений
-Сделать ЛС
++ Сделать ЛС
 + Отправка файлов
     + Сжатие файлов
     + Отправка ТОЛЬКО слов или ТОЛЬКО фотки
     + Убрать пустую картинку
+
+Фиксим багииииииииииииииииииииииии
 
 django-admin startproject MessengerGoga
 
@@ -77,4 +79,5 @@ docker pull python:3.12-slim
 docker build -t messengergoga .
 # docker build messengergoga -f Dockerfile
 
-docker run -it --rm messengergoga
+docker run -p 8000:8000 messengergoga
+# docker run -it messengergoga
