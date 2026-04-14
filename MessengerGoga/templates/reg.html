@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МЕССЕНДЖЕР ГЕОРГИЙ</title>
+    <link rel="stylesheet" href="{% static 'reg.css' %}">
 </head>
 <body>
     {% if messages %}
@@ -22,14 +24,10 @@
             {{ form }}
             <button type="submit" name="reg">Зарегестрироваться</button>
         </form>
+        <input type="button" onclick="location.href='/log';" value="Страница входа" />
     </div>
-    <input type="button" onclick="location.href='/log';" value="Страница входа" />
 </body>
-<!-- <style>
-    /* АХАЛАЙ-МАХАЛАЙ ЦСС ИЗЫДИ!!! */
-</style> -->
 <script>
-
 function hideDiv() {
   var divElement = document.getElementById("messages");
   if (divElement) {

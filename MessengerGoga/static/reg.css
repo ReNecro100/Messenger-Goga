@@ -1,0 +1,34 @@
+.regbox{
+    width: 500px;
+    height: 500px;
+    background-color: rgba(234,12,62,0.25);
+    margin: auto;
+    align-content: center;
+    align-self: center;
+    justify-items: center;
+    max-width: 100%;
+    border-radius: 25px;
+}
+form{
+    width: 400px;
+    justify-items: center;
+}
+input, button{
+    border-radius: 10px;
+}
+*{
+    font-size: 24px;
+    font-family: sans-serif;
+}
+body {
+    background: #c7b39b url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK295fxRAtwy4tJFtpXoQ3NBsuvn8uO69wtw&s) no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    height: 95vh;
+    justify-content: center;
+    align-items: center;
+}
+.appname{
+    padding-bottom: 2rem;
+}

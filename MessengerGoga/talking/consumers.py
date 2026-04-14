@@ -8,7 +8,7 @@ from .models import ChatMessage
 from django.contrib.auth.decorators import login_required
 
 
-#Mozhet asinhronnym sdelatj, a? Ta ne, zachem
+#Mozhet asinhronnym sdelatj, a? Ta ne, zachem. NET, NADO
 #https://channels.readthedocs.io/en/latest/introduction.html
 
 class ChatConsumer(WebsocketConsumer):
