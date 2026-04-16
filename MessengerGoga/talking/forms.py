@@ -4,14 +4,15 @@ from .models import User, ChatMessage, Chat, ChatType
 
 class UserFormReg(forms.ModelForm):
     username = forms.CharField(
-        label = "Твой юзернейм", 
+        label = "Введи своё имя", 
         max_length=150
         )
     password = forms.CharField(
-        label = "Твой пароль", 
+        label = "Введи свой пароль", 
         max_length=32,
         widget=forms.PasswordInput
         )
+    #Dobavitj opisanije???
     class Meta:
         model = User
         fields = ['username', 'password']
@@ -27,11 +28,11 @@ class UserFormReg(forms.ModelForm):
     
 class UserFormLogin(forms.ModelForm):
     username = forms.CharField(
-        label = "Твой юзернейм", 
+        label = "Введи своё имя", 
         max_length=32
         )
     password = forms.CharField(
-        label = "Твой пароль", 
+        label = "Введи свой пароль", 
         max_length=32,
         widget=forms.PasswordInput
         )
@@ -41,11 +42,11 @@ class UserFormLogin(forms.ModelForm):
 
 class UserFormEdit(forms.ModelForm):
     username = forms.CharField(
-        label = "Твой юзернейм", 
+        label = "Имя", 
         max_length=150
         )
     description = forms.CharField(
-        label = "Твоё описание",
+        label = "Описание",
         required = False
         )
     class Meta:
@@ -76,7 +77,7 @@ class ChatFormCreate(forms.ModelForm):
         max_length=128,
     )
     chat_type = forms.ModelChoiceField(
-        queryset=ChatType.objects.all(),
+        queryset=ChatType.objects.all().exclude(id=2),
         label='Тип чата',
         empty_label="Выбери тип чата",  # Значение по умолчанию
     )

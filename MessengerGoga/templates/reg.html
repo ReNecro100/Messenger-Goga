@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МЕССЕНДЖЕР ГЕОРГИЙ</title>
-    <link rel="stylesheet" href="{% static 'reg.css' %}">
+    <link rel="stylesheet" href="{% static 'form.css' %}">
 </head>
 <body>
     {% if messages %}
@@ -17,14 +17,16 @@
         {% endfor %}
     </ul>
     {% endif %}
-    <div class="regbox">
-        <div class="appname">Зарегестрируйся!</div>
-        <form method="post" autocomplete="off">
-            {% csrf_token %}
-            {{ form }}
-            <button type="submit" name="reg">Зарегестрироваться</button>
-        </form>
-        <input type="button" onclick="location.href='/log';" value="Страница входа" />
+    <div class="window">
+        <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> Зарегистрируйся!</div>
+        <input type="button" onclick="location.href='/log';" value="Вход" class="upright-button" />
+        <div class="window-content">
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" name="reg">Зарегистрироваться</button>
+            </form>
+        </div>
     </div>
 </body>
 <script>

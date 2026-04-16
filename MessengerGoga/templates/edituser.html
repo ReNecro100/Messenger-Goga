@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создание нового чата</title>
+    <link rel="stylesheet" href="{% static 'form.css' %}">
 </head>
 <body>
     {% if messages %}
@@ -16,19 +18,24 @@
     </ul>
     {% endif %}
     
-    <div class="appname">Редактируй свой профиль!</div>
-        <form method="post" autocomplete="off">
-            {% csrf_token %}
-            {{ form }}
-            <button type="submit" name="save">Сохранить!</button>
-        </form>
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" name="log_out">Выйти из профиля</button>
-        </form>
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" name="delete_user" value="{{ current_chat.id }}">Удалить пользователя!</button>
-        </form>
+    <div class="window">
+        <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> Редактируй свой профиль!</div>
+        <input type="button" onclick="location.href='/wsschat/2';" value="Выйти" class="upright-button" />
+        <div class="window-content">
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" name="save">Сохранить!</button>
+            </form>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="log_out">Выйти из профиля</button>
+            </form>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="delete_user" value="{{ current_chat.id }}">Удалить пользователя!</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
