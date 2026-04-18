@@ -44,7 +44,14 @@ def wsschat(request, room_name):
                 lechat.members.add(User.objects.get(id=request.POST['member']))
                 lechat.members.add(request.user)
                 return redirect(f'/wsschat/{lechat.id}')
-        
+    if request.method == 'POST' and 'leave_chat' in request.POST:
+        membership = Chat.members.through.objects.get(
+            chat_id=request.POST['leave_chat'],
+            user_id=request.user.id
+        )
+        # Удалить
+        membership.delete()
+        return redirect(f'/wsschat/2')
 
     return render(request, "wsschat.html", {
         "room_name": room_name, 

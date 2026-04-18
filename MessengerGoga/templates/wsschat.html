@@ -10,44 +10,9 @@
     <script src="{% static 'js/wsschat.js' %}" defer></script>
 </head>
 <body>
-    <div class="window">
-        <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> {{ current_chat.name }} (Участники: {{ members_count }})</div>
-        <!-- <input type="button" onclick="location.href='/wsschat/2';" value="Выйти" class="upright-button" /> -->
-        <div class="window-content" id="chat-name">
-            <div class="edit-chats">
-                Описание: {{current_chat.description}}<br>
-                <a href="{% url 'newchat' %}">Создать новый чат</a>
-                {% if current_user.id == current_chat.chat_creator.id %}
-                <a href="{% url 'editchat' current_chat.id %}">Редактировать чат</a>
-                {% endif %}
-            </div>
-            <div class="members">
-                Участники:<br>
-                {% for member in members %}
-                <form method="POST">
-                    {% csrf_token %}
-                    <button type="submit" name="member" value="{{ member.id }}">{{member.username}}</button>
-                </form>
-                {% endfor %}  
-            </div>
-            {% if current_chat.chat_type.name != "ЛС" %}
-            <div class="non-members">
-                Добавить:<br>
-                {% for non_member in non_members %}
-                <form method="POST">
-                    {% csrf_token %}
-                    <button type="submit" name="non_member" value="{{ non_member.id }}">{{non_member.username}}</button>
-                </form>
-                {% endfor %} 
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="window">
-        <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> Сообщения</div>  
+    <div class="window" id="messages-area-window">
+        <div class="window-name"><img src="https://static.wikia.nocookie.net/logopedia/images/c/c4/Notepad_Vista_10.png/revision/latest?cb=20181031102045"> Сообщения</div>  
         <div class="window-content" id="messages-area">
-            
         </div>
         {% if current_chat.chat_type.name != "Канал" or current_user.id == current_chat.chat_creator.id %}
         <div id="message-enter">
@@ -57,26 +22,62 @@
         </div>
         {% endif %}
     </div>
+
+    <div class="window">
+        <div class="window-name"><img src="https://files.softicons.com/download/application-icons/messenger-icons-by-tatice/ico/Messenger.ico"> {{ current_chat.name }} (Участники: {{ members_count }})</div>
+        {% if current_user.id != current_chat.chat_creator.id %}
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="leave_chat" value="{{ current_chat.id }}" class="upright-button">Выйти из чата</button>
+        </form>
+        {% endif %}
+        <div class="window-content" id="chat-name">
+            <div class="edit-chats">
+                Описание: {{current_chat.description}}<br>
+                <a href="{% url 'newchat' %}"><button type="button">Создать новый чат</button></a>
+                {% if current_user.id == current_chat.chat_creator.id %}
+                <a href="{% url 'editchat' current_chat.id %}"><button type="button">Редактировать чат</button></a>
+                {% endif %}
+            </div>
+            <div class="members">
+                Участники:<br>
+                {% for member in members %}
+                <form method="POST" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" name="member" value="{{ member.id }}" class="user-button">{{member.username}}</button>
+                </form>
+                {% endfor %}  
+            </div>
+            {% if current_chat.chat_type.name != "ЛС" %}
+            <div class="non-members">
+                Добавить:<br>
+                {% for non_member in non_members %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="non_member" value="{{ non_member.id }}" class="user-button">{{non_member.username}}</button>
+                </form>
+                {% endfor %} 
+            </div>
+            {% endif %}
+        </div>
+    </div>
     
     <div class="window">
-        <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> Твои чаты</div> 
+        <div class="window-name"><img src="https://i.imgur.com/0dJoZTG.png"> Твои чаты</div> 
         <div class="window-content" id="my-chats">
             {% for my_chat in my_chats %}
-            <div class="chat-message">
-                <a href="{% url 'wsschat' my_chat.id %}">{{my_chat.name}}</a> 
-                <!-- {{my_chat.chat_type.name}}  -->
-            </div>
+            <a href="{% url 'wsschat' my_chat.id %}"><button type="button">{{ my_chat.name }}</button></a>
             {% endfor %} 
         </div>  
         </div>
     </div>
 
     <div class="window">
-        <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> Профиль</div> 
+        <div class="window-name"><img src="https://files.softicons.com/download/application-icons/messenger-icons-by-tatice/ico/MSN%20Mobile.ico"> Профиль</div> 
         <div class="window-content" id="profile-info">
-            {{ current_user.username }}</br>
-            {{ current_user.description }}</br>
-            <a href="{% url 'edituser' current_user.id %}">Редактировать профиль</a>
+            <div><b>Имя:<br></b> {{ current_user.username }}</div>
+            <div><b>Описание:<br></b> {{ current_user.description }}</div>
+            <a href="{% url 'edituser' current_user.id %}"><button type="button">Редактировать профиль</button></a>
         </div>
     </div>
     {{ room_name|json_script:"room-name" }}
