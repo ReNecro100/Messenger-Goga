@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import User, ChatMessage, Chat
+from .models import User, ChatMessage, Chat, ChatType
 from django.db.models import Count, Subquery, OuterRef
 from .forms import UserFormReg, UserFormEdit, UserFormLogin, ChatFormCreate, ChatFormEdit
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,7 @@ def wsschat(request, room_name):
         chat = Chat.objects.get(id=int(room_name))
         chat.members.add(User.objects.get(id=request.POST['non_member']))
     if request.method == 'POST' and 'member' in request.POST:
+        print()
         chats = Chat.objects.filter(
             chat_type=2,
             members__id__in=[request.POST['member'], request.user.id]
@@ -32,9 +33,11 @@ def wsschat(request, room_name):
             chat_form = ChatFormCreate(data={
                 "name": f"{request.user.username} - {User.objects.get(id=request.POST['member'])}",
                 "description": f"ЛС пользователей {request.user.username} и {User.objects.get(id=request.POST['member'])}",
-                "chat_type": 2
+                "chat_type": ChatType.objects.get(id=2).id
                 })
+            #Pofiksitj
             print(chat_form.is_valid())
+            print(chat_form.errors)
             if chat_form.is_valid():
                 lechat = chat_form.save(request, commit=False)
                 lechat.save()
@@ -49,13 +52,15 @@ def wsschat(request, room_name):
         'current_chat': Chat.objects.get(id=int(room_name)),
         'my_chats': request.user.member_of.all(),
         'members_count': Chat.objects.get(id=int(room_name)).members.count(),
-        'members': User.objects.filter(member_of=room_name).exclude(id=request.user.id),
+        'members': User.objects.filter(member_of=room_name),
         'non_members': User.objects.filter(
                             member_of__chat_type_id=2,           # чаты типа 2
-                            member_of__members__id=14            # в чате есть пользователь 14
+                            member_of__members__id=request.user.id            # в чате есть пользователь 14
                         ).exclude(
-                            id=14
-                        ).distinct() #User.objects.exclude(member_of=room_name)
+                            id=request.user.id
+                        ).exclude(
+                            member_of__id=room_name
+                        ).distinct()
     })
 
 @login_required(redirect_field_name="log", login_url='log')

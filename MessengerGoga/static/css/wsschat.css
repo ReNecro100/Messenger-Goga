@@ -1,0 +1,126 @@
+*{
+    font-size: 18px;
+    letter-spacing: -0.75px;
+}
+
+a, a:visited, a:hover, a:active {color: red; text-decoration: none;}
+
+body {
+    background: #c7b39b url(https://images2.alphacoders.com/941/941898.jpg) no-repeat;
+    background-size: cover;
+    
+    min-height: 100vh;
+    margin: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.window-name{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    background-color: #1621c9;
+    padding: 0.25rem;
+    font-weight: bold;
+    text-align: top;
+}
+
+.window-name img{
+    height: 21px;
+    width: 21px;
+}
+
+.window{
+    border: #1621c9 2px solid;
+    border-radius: 5px;
+    background-color: rgb(227, 226, 221);
+    position: relative;
+    width: 600px;
+}
+
+.window-content{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0.25rem;
+}
+#chat-name{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 3fr auto;
+
+    max-height: 400px;
+    overflow-y: scroll;
+}
+.edit-chats{
+    grid-column: span 2;
+}
+
+#messages-area{
+    position: relative;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+.chat-message{
+    padding: 0rem;
+    margin: 0rem;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+.chat-message .msg-words{
+    display: flex;
+    flex-direction: row;
+}
+.chat-message button{
+    width: 32px;
+    height: 32px;
+    min-width: auto !important;
+    display: inline-block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-left: 0.5rem !important;
+}
+.chat-message p{
+    padding: 0rem;
+    margin: 0rem;
+}
+#message-enter{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(204, 201, 185);
+}
+#message-enter input{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0.25rem;
+    width: 500px;
+    border-radius: 5px;
+}
+.window-content button, #message-enter button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0.5rem auto;
+    padding: 0rem 1rem;
+    display: block;
+    min-width: 90%;
+    min-height: 16px;
+
+    border-radius: 5px;
+    border: #1621c9 2px solid;
+}
+
+.window-content input {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0.25rem;
+    width: 200px;
+}
+
+.upright-button{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: absolute;
+    top: 3px;
+    right: 8px;
+
+    border-radius: 5px;
+}
+
+.window-content button:hover{border: rgb(245, 192, 90) 2px solid;}
+
+/* Chto-to novoje */

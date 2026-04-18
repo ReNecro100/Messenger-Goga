@@ -77,7 +77,7 @@ class ChatFormCreate(forms.ModelForm):
         max_length=128,
     )
     chat_type = forms.ModelChoiceField(
-        queryset=ChatType.objects.all().exclude(id=2),
+        queryset=ChatType.objects.all(),
         label='Тип чата',
         empty_label="Выбери тип чата",  # Значение по умолчанию
     )
