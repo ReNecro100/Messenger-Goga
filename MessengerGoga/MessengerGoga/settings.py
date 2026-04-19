@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-5$5zt=6=naz%c-wk4j@a=(^_z!tf^0#t5blv!(#=lp-l(sc8_=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://messenger-goga-production.up.railway.app',
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
@@ -35,6 +39,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 
 # Application definition
 

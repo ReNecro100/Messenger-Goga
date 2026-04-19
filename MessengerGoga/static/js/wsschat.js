@@ -2,12 +2,9 @@ const roomName = JSON.parse(document.getElementById('room-name').textContent);
 const user = JSON.parse(document.getElementById('itsname').textContent);
 const userid = JSON.parse(document.getElementById('itsid').textContent);
 
+const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
 const chatSocket = new WebSocket(
-    'wss://'
-    + window.location.host
-    + '/ws/chat/'
-    + roomName
-    + '/'
+    protocol + window.location.host + '/ws/chat/' + roomName + '/'
 );
 
 chatSocket.onmessage = function(e) {
