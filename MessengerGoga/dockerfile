@@ -13,7 +13,7 @@ COPY . .
 
 RUN ls -la
 
-RUN pip install --no-cache-dir -r requirements.txt 
+RUN pip install --no-cache-dir -r MessengerGoga/requirements.txt 
 
 EXPOSE 8080
 
