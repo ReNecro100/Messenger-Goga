@@ -67,6 +67,8 @@ docker build -t messengergoga .
 docker run -p 8000:8000 messengergoga
 # docker run -it messengergoga
 
+docker compose -f "messengergoga/docker-compose.yml" up --build
+
 Переход на альфу:
 Пушить в гитхаб
 Очистка бд

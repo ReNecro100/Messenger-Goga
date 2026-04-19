@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-5$5zt=6=naz%c-wk4j@a=(^_z!tf^0#t5blv!(#=lp-l(sc8_=
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
+    'localhost',
+    '127.0.0.1',
     'messenger-goga-production.up.railway.app',
 ]
 
@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -85,11 +86,17 @@ WSGI_APPLICATION = 'MessengerGoga.wsgi.application'
 
 ASGI_APPLICATION = "MessengerGoga.asgi.application"
 CHANNEL_LAYERS = {
+    # "default": {
+    #     "BACKEND": "channels.layers.InMemoryChannelLayer"
+    #     # "CONFIG": {
+    #     #     "hosts": [("127.0.0.1", 6379)],
+    #     # },
+    # },
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-        # "CONFIG": {
-        #     "hosts": [("127.0.0.1", 6379)],
-        # },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get("REDIS_URL", "redis://localhost:6379")],
+        },
     },
 }
 
