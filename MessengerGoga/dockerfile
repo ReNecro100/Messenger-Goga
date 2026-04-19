@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY messengergoga/requirements.txt .
+COPY ./messengergoga/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt 
 
 COPY  / .
