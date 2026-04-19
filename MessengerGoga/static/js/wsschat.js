@@ -3,7 +3,7 @@ const user = JSON.parse(document.getElementById('itsname').textContent);
 const userid = JSON.parse(document.getElementById('itsid').textContent);
 
 const chatSocket = new WebSocket(
-    'ws://'
+    'wss://'
     + window.location.host
     + '/ws/chat/'
     + roomName
