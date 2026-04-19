@@ -5,15 +5,14 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Копируем через RUN (ошибки игнорируются)
-RUN cp ./MessengerGoga/requirements.txt . 2>/dev/null || true
-RUN cp ./requirements.txt . 2>/dev/null || true
+# Копируем ВСЮ папку MessengerGoga (со всем содержимым)
+COPY ./MessengerGoga/ ./MessengerGoga/
 
+# Устанавливаем зависимости
+RUN pip install --no-cache-dir -r MessengerGoga/requirements.txt
+
+# Копируем остальное (talking, static, manage.py и т.д.)
 COPY . .
-
-RUN ls -la
-
-RUN pip install --no-cache-dir -r MessengerGoga/requirements.txt 
 
 EXPOSE 8080
 
