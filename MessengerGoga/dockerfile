@@ -1,11 +1,20 @@
 FROM python:3.12-slim
 
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Копируем содержимое MessengerGoga прямо в /app
-COPY ./MessengerGoga/ .
+# Копируем через RUN (ошибки игнорируются)
+RUN cp ./MessengerGoga/requirements.txt . 2>/dev/null || true
+RUN cp ./requirements.txt . 2>/dev/null || true
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY ./MessengerGoga .
 
-# Теперь asgi.py доступен без префикса
-CMD ["uvicorn", "asgi:application", "--host", "0.0.0.0", "--port", "8080"]
+RUN ls -la
+
+RUN pip install --no-cache-dir -r requirements.txt 
+
+EXPOSE 8080
+
+CMD ["uvicorn", "MessengerGoga.asgi:application", "--host", "0.0.0.0", "--port", "8080"]
