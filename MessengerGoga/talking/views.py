@@ -33,7 +33,7 @@ def wsschat(request, room_name):
             chat_form = ChatFormCreate(data={
                 "name": f"{request.user.username} - {User.objects.get(id=request.POST['member'])}",
                 "description": f"ЛС пользователей {request.user.username} и {User.objects.get(id=request.POST['member'])}",
-                "chat_type": ChatType.objects.get(id=2).id
+                "chat_type": ChatType.objects.get(id=1).id
                 })
             #Pofiksitj
             print(chat_form.is_valid())
@@ -110,7 +110,7 @@ def reg(request):
         if form.is_valid():
             # Сохраняем автора
             user = form.save()
-            Chat.objects.get(id=2).members.add(user) #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
+            Chat.objects.get(id=1).members.add(user) #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
             form = UserFormReg()
             messages.success(request, f'Теперь нужно залогиниться!')
             return redirect('log')
