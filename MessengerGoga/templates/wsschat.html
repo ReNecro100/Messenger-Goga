@@ -8,8 +8,19 @@
     <link rel="stylesheet" href="{% static 'css/wsschat.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
     <script src="{% static 'js/wsschat.js' %}" defer></script>
+    <link rel="icon" type="image/png" href="{% static 'media/icon.png' %}">
 </head>
 <body>
+    {% if messages %}
+    <ul class="messages" id="messages" style="list-style-type: none;">
+        {% for message in messages %}
+            <li class="{{ message.tags }}" id="speech-bubble">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <div class="window" id="messages-area-window">
         <div class="window-name"><img src="https://static.wikia.nocookie.net/logopedia/images/c/c4/Notepad_Vista_10.png/revision/latest?cb=20181031102045"> Сообщения</div>  
         <div class="window-content" id="messages-area">
@@ -82,6 +93,6 @@
     </div>
     {{ room_name|json_script:"room-name" }}
     {{ current_user.username|json_script:"itsname" }}
-    {{ current_user.id|json_script:"itsid" }}
+    {{ current_user.id|json_script:"itsid" }}    
 </body>
 </html>

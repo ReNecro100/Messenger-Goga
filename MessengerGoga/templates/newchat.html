@@ -4,26 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создание нового чата</title>
+    <title>МЕССЕНДЖЕР ГЕОРГИЙ</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/commands.js' %}" defer></script>
+    <link rel="icon" type="image/png" href="{% static 'media/icon.png' %}">
 </head>
 <body>
     {% if messages %}
-    <ul class="messages" id="messages" style="position: absolute; top: 0; left: 0; background: red; color: white; z-index: 9999;">
+    <ul class="messages" id="messages" style="list-style-type: none;">
         {% for message in messages %}
-            <li class="{{ message.tags }}">
+            <li class="{{ message.tags }}" id="speech-bubble">
                 {{ message }}
             </li>
         {% endfor %}
     </ul>
     {% endif %}
+    
     <div class="window">
         <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> Создай новый чат!</div>
-        <input type="button" onclick="location.href='/wsschat/2';" value="Выйти" class="upright-button" />
+        <input type="button" onclick="location.href='/wsschat/1';" value="Выйти" class="upright-button" />
         <div class="window-content">
             <form method="post" autocomplete="off">
                 {% csrf_token %}
-                {{ form }}
+                {% for field in form %}
+                    <div>
+                        {{ field.label_tag }}
+                        {{ field }}
+                        <!-- Просто не выводим {{ field.errors }} -->
+                    </div>
+                {% endfor %}
                 <button type="submit" name="log">Создать!</button>
             </form>
         </div>

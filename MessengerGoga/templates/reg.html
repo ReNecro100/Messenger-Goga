@@ -5,39 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МЕССЕНДЖЕР ГЕОРГИЙ</title>
-    <link rel="stylesheet" href="{% static 'css/stylescss' %}">
+    <script src="{% static 'js/commands.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'media/icon.png' %}">
 </head>
 <body>
     {% if messages %}
-    <ul class="messages" id="messages" style="position: absolute; top: 0; left: 0; background: red; color: white; z-index: 9999;">
+    <ul class="messages" id="messages" style="list-style-type: none;">
         {% for message in messages %}
-            <li class="{{ message.tags }}">
+            <li class="{{ message.tags }}" id="speech-bubble">
                 {{ message }}
             </li>
         {% endfor %}
     </ul>
     {% endif %}
+
     <div class="window">
         <div class="window-name"><img src="https://i.imgur.com/WLQXHbd.png"> Зарегистрируйся!</div>
         <input type="button" onclick="location.href='/log';" value="Вход" class="upright-button" />
         <div class="window-content">
-            <form method="post" autocomplete="off">
+            <form method="post" autocomplete="off" novalidate>
                 {% csrf_token %}
-                {{ form }}
+                {% for field in form %}
+                    <div>
+                        {{ field.label_tag }}
+                        {{ field }}
+                        <!-- Просто не выводим {{ field.errors }} -->
+                    </div>
+                {% endfor %}
                 <button type="submit" name="reg">Зарегистрироваться</button>
             </form>
         </div>
     </div>
 </body>
-<script>
-function hideDiv() {
-  var divElement = document.getElementById("messages");
-  if (divElement) {
-    divElement.style.display = "none";
-  }
-}
-
-// Call the hideDiv function after a 5-second delay
-setTimeout(hideDiv, 3000);
-</script>
 </html>

@@ -3,8 +3,46 @@
     letter-spacing: -0.75px;
 }
 
+/* .messages{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: absolute;
+    top: 0; 
+    left: 10px; 
+    background: rgb(243,243,210); 
+    border: solid #000000 2px;
+    z-index: 9999;
+    padding: 0.5rem;
+} */
+#speech-bubble {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0.5rem;
+    border: solid #000000 2px;
+	position: absolute;
+    top: 600px; 
+    left: 150px;
+	background: #f3f3d2;
+	border-radius: .4em;
+}
+
+#speech-bubble:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 38px solid transparent;
+	border-bottom-color: #f3f3d2;
+	border-top: 0;
+	border-left: 0;
+	margin-left: -19px;
+	margin-top: -38px;
+}
+a, a:visited, a:hover, a:active {color: red; text-decoration: none;}
+
 body {
-    background: #c7b39b url(https://images2.alphacoders.com/941/941898.jpg) no-repeat;
+    background: #c7b39b url('/static/media/background.jpg') no-repeat;
+    /* https://images2.alphacoders.com/941/941898.jpg */
     background-size: cover;
     
     display: flex;

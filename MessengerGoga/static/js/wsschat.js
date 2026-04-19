@@ -20,7 +20,6 @@ chatSocket.onmessage = function(e) {
         addmsg(data)
     }
     else{
-        // Ищем элемент по data-message-id
         const messageElement = document.querySelector(`.chat-message[data-message-id="${data.message_id}"]`);
         if (messageElement) {
             messageElement.remove();
@@ -29,7 +28,6 @@ chatSocket.onmessage = function(e) {
 };
 
 function addmsg(data){
-    // Проверяем, нет ли уже такого сообщения
     const existingMessage = document.querySelector(`.chat-message[data-message-id="${data.id}"]`);
     if (existingMessage) {
         console.log('Message already exists, skipping:', data.id);
@@ -51,7 +49,7 @@ function addmsg(data){
                 <button class="delete-msg-btn" data-message-id="${data.id}">🗑</button>
             </div>
         ` + (msgFile ? `<img src="${msgFile}" alt="">` : ``)
-        // Назначаем обработчик для новой кнопки
+
         const deleteBtn = newDiv.querySelector('.delete-msg-btn');
         if (deleteBtn) {
             deleteBtn.onclick = function(e) {
@@ -105,8 +103,7 @@ document.querySelector('#chat-message-submit').onclick = async function(e) {
         console.log()
     }
     catch{}
-    //Сокращение
-    //console.log(fileToBase64.length)
+
     if (message!="" || file!=null){
         chatSocket.send(JSON.stringify({
             'type': "chat_message",
@@ -131,7 +128,6 @@ function compressImage(file, maxWidth = 640, maxHeight = 480) {
                 const canvas = document.createElement("canvas");
                 const ctx = canvas.getContext("2d");
                 
-                // Вычисляем новые размеры с сохранением пропорций
                 let width = img.width;
                 let height = img.height;
                 
@@ -162,11 +158,7 @@ function compressImage(file, maxWidth = 640, maxHeight = 480) {
         reader.readAsDataURL(file);
     });
 }
-// const decompressImage = (file) => {
-//     LZString.decompress(dataurl);
-// };
 
-// Один раз - и работает для ВСЕХ кнопок (старых, новых, будущих)
 document.body.addEventListener('click', function(e) {
     // Проверяем, что кликнули по кнопке удаления
     if (e.target.classList.contains('delete-msg-btn')) {
@@ -190,3 +182,54 @@ document.body.addEventListener('click', function(e) {
         }
     }
 });
+
+//Okno dvigatj
+// let isDragging = false;
+// let currentWindow = null;
+// let startX, startY, initialLeft, initialTop;
+
+// document.querySelectorAll('.window').forEach(win => {
+//     const header = win.querySelector('.window-name');
+    
+//     header.addEventListener('mousedown', (e) => {
+//         if (e.target.closest('.window-name')) {
+//             isDragging = true;
+//             currentWindow = win;
+            
+//             // Запоминаем текущую позицию окна
+//             const rect = win.getBoundingClientRect();
+//             initialLeft = rect.left;
+//             initialTop = rect.top;
+//             startX = e.clientX - rect.left;
+//             startY = e.clientY - rect.top;
+            
+//             // Переводим ТОЛЬКО текущее окно в absolute
+//             win.style.position = 'absolute';
+//             win.style.left = initialLeft + 'px';
+//             win.style.top = initialTop + 'px';
+//             win.style.margin = '0';
+//             // Не меняем размер!
+//             win.style.width = rect.width + 'px';
+//             win.style.height = rect.height + 'px';
+//             win.style.zIndex = '9999';
+            
+//             // Остальные окна остаются в grid, ничего с ними не делаем
+//         }
+//     });
+// });
+
+// document.addEventListener('mousemove', (e) => {
+//     if (isDragging && currentWindow) {
+//         currentWindow.style.left = (e.clientX - startX) + 'px';
+//         currentWindow.style.top = (e.clientY - startY) + 'px';
+//     }
+// });
+
+// document.addEventListener('mouseup', () => {
+//     if (isDragging) {
+//         // Окно остаётся там, где его отпустили
+//         // Ничего не возвращаем
+//         isDragging = false;
+//         currentWindow = null;
+//     }
+// });

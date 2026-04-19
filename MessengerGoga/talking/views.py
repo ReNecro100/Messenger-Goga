@@ -49,9 +49,8 @@ def wsschat(request, room_name):
             chat_id=request.POST['leave_chat'],
             user_id=request.user.id
         )
-        # Удалить
         membership.delete()
-        return redirect(f'/wsschat/2')
+        return redirect(f'/wsschat/1') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
 
     return render(request, "wsschat.html", {
         "room_name": room_name, 
@@ -75,12 +74,16 @@ def new_chat(request):
     if request.method == 'POST':
         # Создаем форму с данными POST
         form = ChatFormCreate(request.POST)
-        if form.is_valid():
+        if request.POST["chat_type"]=='2':
+            messages.error(request, 'Ты не можешь вот так создавать ЛС!')
+        elif form.is_valid():
             # Сохраняем автора
             lechat = form.save(request)
             lechat.members.add(request.user)
             form = ChatFormCreate()
             return redirect(f'wsschat/{lechat.id}')
+        else:
+            messages.error(request, f'{form.errors}')
     else:
         # GET запрос - создаем пустую форму
         form = ChatFormCreate()
@@ -88,7 +91,7 @@ def new_chat(request):
 
 def root_redirect(request):
     if request.user.is_authenticated:
-        return redirect('/wsschat/2') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
+        return redirect('/wsschat/1') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
     else:
         return redirect('/log')
 
@@ -111,6 +114,8 @@ def reg(request):
             form = UserFormReg()
             messages.success(request, f'Теперь нужно залогиниться!')
             return redirect('log')
+        else:
+            messages.error(request, f'{form.errors}')
     else:
         # GET запрос - создаем пустую форму
         form = UserFormReg()
@@ -126,7 +131,7 @@ def log(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('wsschat/2') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
+            return redirect('wsschat/1') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
         else:
             messages.error(request, 'Неверное имя пользователя или пароль!')
             form = UserFormLogin(request.POST)
@@ -140,7 +145,7 @@ def log(request):
 def edit_user(request, userid):
     user = get_object_or_404(User, pk=userid)
     if request.user.id!=int(userid):
-        return redirect('/wsschat/2') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
+        return redirect('/wsschat/1') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
     if request.method == 'POST':
         if 'save' in request.POST:
             # Создаем форму с данными POST
@@ -149,6 +154,8 @@ def edit_user(request, userid):
                 # Сохраняем автора
                 user = form.save()
                 form = UserFormEdit(request.POST, instance=user)
+            else:
+                messages.error(request, f'{form.errors}')
         if 'delete_user' in request.POST:
             record = User.objects.get(id=request.user.id)
             record.delete()
@@ -166,17 +173,19 @@ def edit_user(request, userid):
 def edit_chat(request, chatid):
     chat = get_object_or_404(Chat, pk=chatid)
     if request.user.id!=int(chat.chat_creator.id):
-        return redirect('/wsschat/2') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
+        return redirect('/wsschat/1') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
     if request.method == 'POST':
         if 'save' in request.POST:
             form = ChatFormEdit(request.POST, instance=chat)
             if form.is_valid():
                 chat = form.save()
                 form = ChatFormEdit(request.POST, instance=chat)
+            else:
+                messages.error(request, f'{form.errors}')    
         if 'delete_chat' in request.POST:
             record = Chat.objects.get(id=chat.id)
             record.delete()
-            return redirect('/wsschat/2') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
+            return redirect('/wsschat/1') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
     else:
         # GET запрос - создаем пустую форму
         form = ChatFormEdit(instance=chat)

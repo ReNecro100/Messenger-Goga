@@ -89,10 +89,12 @@ body {
     margin: 0rem;
     overflow-wrap: break-word;
     word-break: break-all;
+    max-width: 95%;
 }
 .chat-message .msg-words{
     display: flex;
     flex-direction: row;
+    max-width: 95%;
 }
 .chat-message button{
     width: 32px;
@@ -115,7 +117,7 @@ body {
 #message-enter input{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0.25rem;
-    width: 500px;
+    width: 90%;
     border-radius: 5px;
 }
 .window-content button, #message-enter button {
