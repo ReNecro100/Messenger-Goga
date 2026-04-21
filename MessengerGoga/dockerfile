@@ -9,7 +9,8 @@ WORKDIR /app
 RUN cp ./MessengerGoga/requirements.txt . 2>/dev/null || true
 RUN cp ./requirements.txt . 2>/dev/null || true
 
-COPY ./MessengerGoga .
+COPY . . 
+#COPY ./MessengerGoga .
 
 RUN ls -la
 

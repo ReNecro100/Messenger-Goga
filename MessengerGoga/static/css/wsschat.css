@@ -6,7 +6,8 @@
 a, a:visited, a:hover, a:active {color: red; text-decoration: none;}
 
 body {
-    background: #c7b39b url(https://images2.alphacoders.com/941/941898.jpg) no-repeat;
+    background: #c7b39b url('/static/media/background.jpg') no-repeat;
+    /* https://images2.alphacoders.com/941/941898.jpg */
     background-size: cover;
     
     margin: 0;
@@ -58,6 +59,9 @@ body {
     grid-template-rows: 3fr auto;
 
     max-height: 400px;
+    overflow-y: scroll;
+}
+#my-chats{
     overflow-y: scroll;
 }
 .user-button {

@@ -36,7 +36,7 @@
 
     <div class="window">
         <div class="window-name"><img src="https://files.softicons.com/download/application-icons/messenger-icons-by-tatice/ico/Messenger.ico"> {{ current_chat.name }} (Участники: {{ members_count }})</div>
-        {% if current_user.id != current_chat.chat_creator.id %}
+        {% if current_user.id != current_chat.chat_creator.id and current_chat.id != 1 %}
         <form method="POST">
             {% csrf_token %}
             <button type="submit" name="leave_chat" value="{{ current_chat.id }}" class="upright-button">Выйти из чата</button>
