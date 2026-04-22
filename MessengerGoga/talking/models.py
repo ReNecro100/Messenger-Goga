@@ -13,7 +13,7 @@ class User(AbstractUser):
 
 class Chat(models.Model):
     name = models.CharField(
-        max_length=32,
+        max_length=72,
         verbose_name="Название",
         blank=False,
         unique=True

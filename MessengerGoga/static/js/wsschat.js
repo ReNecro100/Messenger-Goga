@@ -91,15 +91,18 @@ chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
 };
 
-document.querySelector('#chat-message-input').focus();
+try{
+    document.querySelector('#chat-message-input').focus();
 document.querySelector('#chat-message-input').onkeyup = function(e) {
     if (e.key === 'Enter') {  // enter, return
         document.querySelector('#chat-message-submit').click();
     }
 };
+}
+catch{}
 
-
-document.querySelector('#chat-message-submit').onclick = async function(e) {
+try{
+    document.querySelector('#chat-message-submit').onclick = async function(e) {
     const messageInputDom = document.querySelector('#chat-message-input')
     const fileInputDom = document.querySelector('#chat-file-input')
     const message = messageInputDom.value;
@@ -121,6 +124,8 @@ document.querySelector('#chat-message-submit').onclick = async function(e) {
         fileInputDom.value = '';
     }
 };
+}
+catch{}
 
 function compressImage(file, maxWidth = 640, maxHeight = 480) {
     return new Promise((resolve, reject) => {
@@ -186,53 +191,96 @@ document.body.addEventListener('click', function(e) {
     }
 });
 
+
+
 //Okno dvigatj
-// let isDragging = false;
-// let currentWindow = null;
-// let startX, startY, initialLeft, initialTop;
+let isDragging = false;
+let currentWindow = null;
+let startX, startY;
+let originalPositions = new Map();
+let originalSizes = new Map();  // ← отдельно храним размеры
 
-// document.querySelectorAll('.window').forEach(win => {
-//     const header = win.querySelector('.window-name');
+// Функция сохранения позиций и размеров ВСЕХ окон (один раз при старте)
+function saveAllWindowPositions() {
+    const windows = document.querySelectorAll('.window');
+    windows.forEach(win => {
+        const rect = win.getBoundingClientRect();
+        originalPositions.set(win, {
+            left: rect.left,
+            top: rect.top
+        });
+        originalSizes.set(win, {
+            width: rect.width,
+            height: rect.height
+        });
+    });
+}
+
+// Функция перевода всех окон в absolute с ИСХОДНЫМИ размерами
+function fixAllWindowsToAbsolute() {
+    const windows = document.querySelectorAll('.window');
+    windows.forEach(win => {
+        const pos = originalPositions.get(win);
+        const size = originalSizes.get(win);
+        if (pos && size) {
+            win.style.position = 'absolute';
+            win.style.left = pos.left + 'px';
+            win.style.top = pos.top + 'px';
+            win.style.width = size.width + 'px';   // ← фиксированный размер
+            win.style.height = size.height + 'px'; // ← фиксированный размер
+            win.style.margin = '0';
+            win.style.boxSizing = 'border-box';
+        }
+    });
+}
+
+// Инициализация — сохраняем размеры один раз
+document.addEventListener('DOMContentLoaded', () => {
+    saveAllWindowPositions();  // ← только один раз при загрузке!
     
-//     header.addEventListener('mousedown', (e) => {
-//         if (e.target.closest('.window-name')) {
-//             isDragging = true;
-//             currentWindow = win;
-            
-//             // Запоминаем текущую позицию окна
-//             const rect = win.getBoundingClientRect();
-//             initialLeft = rect.left;
-//             initialTop = rect.top;
-//             startX = e.clientX - rect.left;
-//             startY = e.clientY - rect.top;
-            
-//             // Переводим ТОЛЬКО текущее окно в absolute
-//             win.style.position = 'absolute';
-//             win.style.left = initialLeft + 'px';
-//             win.style.top = initialTop + 'px';
-//             win.style.margin = '0';
-//             // Не меняем размер!
-//             win.style.width = rect.width + 'px';
-//             win.style.height = rect.height + 'px';
-//             win.style.zIndex = '9999';
-            
-//             // Остальные окна остаются в grid, ничего с ними не делаем
-//         }
-//     });
-// });
+    document.querySelectorAll('.window').forEach(win => {
+        const header = win.querySelector('.window-name');
+        
+        header.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.window-name')) {
+                document.body.style.display = 'block';
+                fixAllWindowsToAbsolute();  // ← используем сохранённые размеры
+                
+                isDragging = true;
+                currentWindow = win;
+                
+                const rect = win.getBoundingClientRect();
+                startX = e.clientX - rect.left;
+                startY = e.clientY - rect.top;
+                currentWindow.style.zIndex = '9999';
+            }
+        });
+    });
+});
 
-// document.addEventListener('mousemove', (e) => {
-//     if (isDragging && currentWindow) {
-//         currentWindow.style.left = (e.clientX - startX) + 'px';
-//         currentWindow.style.top = (e.clientY - startY) + 'px';
-//     }
-// });
+// Перетаскивание
+document.addEventListener('mousemove', (e) => {
+    if (isDragging && currentWindow) {
+        currentWindow.style.left = (e.clientX - startX) + 'px';
+        currentWindow.style.top = (e.clientY - startY) + 'px';
+    }
+});
 
-// document.addEventListener('mouseup', () => {
-//     if (isDragging) {
-//         // Окно остаётся там, где его отпустили
-//         // Ничего не возвращаем
-//         isDragging = false;
-//         currentWindow = null;
-//     }
-// });
+// Отпускание
+document.addEventListener('mouseup', () => {
+    if (isDragging) {
+        // Обновляем только позиции (размеры не трогаем!)
+        const windows = document.querySelectorAll('.window');
+        windows.forEach(win => {
+            const rect = win.getBoundingClientRect();
+            originalPositions.set(win, {
+                left: rect.left,
+                top: rect.top
+            });
+        });
+        
+        currentWindow.style.zIndex = '';
+        isDragging = false;
+        currentWindow = null;
+    }
+});

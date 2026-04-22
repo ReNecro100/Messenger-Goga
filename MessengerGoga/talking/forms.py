@@ -5,7 +5,7 @@ from .models import User, ChatMessage, Chat, ChatType
 class UserFormReg(forms.ModelForm):
     username = forms.CharField(
         label = "Введи своё имя", 
-        max_length=150
+        max_length=32
         )
     password = forms.CharField(
         label = "Введи свой пароль", 
@@ -43,7 +43,7 @@ class UserFormLogin(forms.ModelForm):
 class UserFormEdit(forms.ModelForm):
     username = forms.CharField(
         label = "Имя", 
-        max_length=150
+        max_length=32
         )
     description = forms.CharField(
         label = "Описание",
@@ -69,7 +69,7 @@ class UserFormEdit(forms.ModelForm):
 class ChatFormCreate(forms.ModelForm):
     name = forms.CharField(
         label="Название чата",
-        max_length=32
+        max_length=72
     )
     description = forms.CharField(
         required=False,

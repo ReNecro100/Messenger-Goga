@@ -36,7 +36,7 @@ def wsschat(request, room_name):
                 })
             #Pofiksitj
             # print(chat_form.is_valid())
-            # print(chat_form.errors)
+            print(chat_form.errors)
             if chat_form.is_valid():
                 lechat = chat_form.save(request, commit=False)
                 lechat.save()
