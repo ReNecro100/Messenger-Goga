@@ -1,0 +1,21 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Копируем через RUN (ошибки игнорируются)
+RUN cp ./MessengerGoga/requirements.txt . 2>/dev/null || true
+RUN cp ./requirements.txt . 2>/dev/null || true
+
+#COPY . . 
+COPY ./MessengerGoga .
+
+RUN ls -la
+
+RUN pip install --no-cache-dir -r requirements.txt 
+
+EXPOSE 8080
+
+CMD ["uvicorn", "MessengerGoga.asgi:application", "--host", "0.0.0.0", "--port", "8080"]

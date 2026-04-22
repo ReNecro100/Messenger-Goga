@@ -46,7 +46,7 @@
             <div class="edit-chats">
                 Описание: {{current_chat.description}}<br>
                 <a href="{% url 'newchat' %}"><button type="button">Создать новый чат</button></a>
-                {% if current_user.id == current_chat.chat_creator.id %}
+                {% if current_user.id == current_chat.chat_creator.id or current_chat.chat_type.id == 2 %}
                 <a href="{% url 'editchat' current_chat.id %}"><button type="button">Редактировать чат</button></a>
                 {% endif %}
             </div>

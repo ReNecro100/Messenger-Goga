@@ -38,10 +38,9 @@ body {
     border-radius: 5px;
     background-color: rgb(227, 226, 221);
     position: relative;
-    min-width: 400px;
+    min-width: 200px;
     flex: 0 0 auto;
     margin: 0.5rem;
-    /* align-items: flex-start; */
 }
 
 #messages-area-window{
@@ -160,3 +159,9 @@ body {
 .window-content button:hover{border: rgb(245, 192, 90) 2px solid;}
 
 /* Chto-to novoje */
+@media (max-width:768px){
+    body{
+        display: flex;
+        flex-direction: column;
+    }
+}

@@ -23,9 +23,8 @@ newUser - newUser
 + Иконки для "окон"
 + Перемещаемые окна
 Мобильный интерфейс
+Ридмик
 
-
-Фиксим багииииииииииииииииииииииии
 
 django-admin startproject MessengerGoga
 
@@ -46,6 +45,11 @@ python -m venv venv
 cd messengergoga
 venv\scripts\activate
 python manage.py runserver
+
+SQLite:
+UPDATE sqlite_sequence SET seq = 1 WHERE name = 'talking_chat';
+PostgreSQL:
+ALTER SEQUENCE talking_chat_id_sequence RESTART WITH 2;
 
 Идейки от друзяшек
 Стикеры с Георгием и Максимом
@@ -69,8 +73,7 @@ docker run -p 8000:8000 messengergoga
 
 docker compose -f "messengergoga/docker-compose.yml" up --build
 
-Переход на альфу:
-Пушить в гитхаб
-Очистка бд
-Создание канала
-Замена wsschat/2 на wsschat/1 (в альфе2 автоматизировать)
+Деплой:
+Замена CHANNEL_LAYERS
+Исправление Dockerfile (либо новый создай, хз)
+Пуш на гитхаб

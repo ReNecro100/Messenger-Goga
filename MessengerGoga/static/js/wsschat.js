@@ -9,12 +9,15 @@ const chatSocket = new WebSocket(
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-        
+    const messagesArea = document.getElementById('messages-area');
+
     if(data.action=='new_message'){
         addmsg(data)
+        messagesArea.scrollTop = messagesArea.scrollHeight;
     }
     if(data.action=='history'){
         addmsg(data)
+        messagesArea.scrollTop = messagesArea.scrollHeight;
     }
     else{
         const messageElement = document.querySelector(`.chat-message[data-message-id="${data.message_id}"]`);
@@ -27,7 +30,6 @@ chatSocket.onmessage = function(e) {
 function addmsg(data){
     const existingMessage = document.querySelector(`.chat-message[data-message-id="${data.id}"]`);
     if (existingMessage) {
-        console.log('Message already exists, skipping:', data.id);
         return;
     }
     const newDiv = document.createElement('div');
@@ -38,7 +40,7 @@ function addmsg(data){
         msgFile = data.message_file 
     }
     catch{}
-    msgFile ? console.log(msgFile.length) : console.log(data.message);
+    // msgFile ? console.log(msgFile.length) : console.log(data.message);
     if(user == data.username){
         newDiv.innerHTML = `
             <div class="msg-words">
@@ -66,8 +68,11 @@ function addmsg(data){
                 }
             };
         }
+        // Автоматическая прокрутка вниз
+        const messagesArea = document.getElementById('messages-area');
+        messagesArea.appendChild(newDiv);
+        messagesArea.scrollTop = messagesArea.scrollHeight;
 
-        document.getElementById('messages-area').appendChild(newDiv);
     }
     else{
         newDiv.innerHTML = `
@@ -75,7 +80,11 @@ function addmsg(data){
                 <p>${data.username}: ${data.message}</p>
             </div>
         ` + (msgFile ? `<img src="${msgFile}" alt="">` : ``)
-        document.getElementById('messages-area').appendChild(newDiv);
+        
+        // Автоматическая прокрутка вниз
+        const messagesArea = document.getElementById('messages-area');
+        messagesArea.appendChild(newDiv);
+        messagesArea.scrollTop = messagesArea.scrollHeight;
     }
 }
 chatSocket.onclose = function(e) {
@@ -97,7 +106,6 @@ document.querySelector('#chat-message-submit').onclick = async function(e) {
     let file = null
     try{
         file = await compressImage(fileInputDom.files[0])
-        console.log()
     }
     catch{}
 
@@ -162,7 +170,6 @@ document.body.addEventListener('click', function(e) {
         e.preventDefault();
         
         const messageId = e.target.getAttribute('data-message-id');
-        console.log('Delete clicked for message:', messageId);
         
         // Отправляем на сервер
         chatSocket.send(JSON.stringify({
@@ -175,7 +182,6 @@ document.body.addEventListener('click', function(e) {
         const messageElement = e.target.closest('.chat-message');
         if (messageElement) {
             messageElement.remove();
-            console.log('Message removed from DOM:', messageId);
         }
     }
 });

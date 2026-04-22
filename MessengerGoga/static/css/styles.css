@@ -42,7 +42,6 @@ a, a:visited, a:hover, a:active {color: red; text-decoration: none;}
 
 body {
     background: #c7b39b url('/static/media/background.jpg') no-repeat;
-    /* https://images2.alphacoders.com/941/941898.jpg */
     background-size: cover;
     
     display: flex;
@@ -50,6 +49,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    overflow: hidden;
 }
 
 .window-name{

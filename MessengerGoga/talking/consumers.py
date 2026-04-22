@@ -56,11 +56,11 @@ class ChatConsumer(WebsocketConsumer):
             else:
                 form = ChatMessageForm(data={'message_words': message, 'message_file': r"\x"})
             
-            print(form.data)
+            # print(form.data)
             if form.is_valid():
                 msg = form.save(self)
                 # Send message to room group
-                print(len(msg.message_file))
+                # print(len(msg.message_file))
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name, {
                         "type": "chat_message",
@@ -84,7 +84,8 @@ class ChatConsumer(WebsocketConsumer):
                         }
                     )
             except ChatMessage.DoesNotExist:
-                print("You stupid ni")
+                pass
+                # print("no")
                 
 
 

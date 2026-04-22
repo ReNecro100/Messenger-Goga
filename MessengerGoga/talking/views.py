@@ -32,11 +32,11 @@ def wsschat(request, room_name):
             chat_form = ChatFormCreate(data={
                 "name": f"{request.user.username} - {User.objects.get(id=request.POST['member'])}",
                 "description": f"ЛС пользователей {request.user.username} и {User.objects.get(id=request.POST['member'])}",
-                "chat_type": ChatType.objects.get(id=1).id
+                "chat_type": ChatType.objects.get(id=2).id
                 })
             #Pofiksitj
-            print(chat_form.is_valid())
-            print(chat_form.errors)
+            # print(chat_form.is_valid())
+            # print(chat_form.errors)
             if chat_form.is_valid():
                 lechat = chat_form.save(request, commit=False)
                 lechat.save()
@@ -51,6 +51,8 @@ def wsschat(request, room_name):
         membership.delete()
         return redirect(f'/wsschat/1') #Pomeniatj idshnik pri zapuske v obraschenije <-VAZHNO SHO KAPEC
 
+    # print(request.user.id)
+    # print(User.objects.filter(member_of__chat_type_id=2, member_of__members__id=request.user.id))
     return render(request, "wsschat.html", {
         "room_name": room_name, 
         'current_user': request.user, 
@@ -61,11 +63,7 @@ def wsschat(request, room_name):
         'non_members': User.objects.filter(
                             member_of__chat_type_id=2,           # чаты типа 2
                             member_of__members__id=request.user.id            # в чате есть пользователь 14
-                        ).exclude(
-                            id=request.user.id
-                        ).exclude(
-                            member_of__id=room_name
-                        ).distinct()
+                        ).exclude(id=request.user.id).exclude(member_of__id=room_name).distinct()
     })
 
 @login_required(redirect_field_name="log", login_url='log')
