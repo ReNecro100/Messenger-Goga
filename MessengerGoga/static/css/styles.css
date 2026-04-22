@@ -71,7 +71,7 @@ body {
     border-radius: 5px;
     background-color: rgb(227, 226, 221);
     position: relative;
-    min-width: 400px;
+    min-width: 450px;
 }
 
 .window-content{
@@ -83,6 +83,7 @@ body {
     margin: 0.5rem auto;
     padding: 0rem 1rem;
     display: block;
+    width: 90%;
 
     border-radius: 5px;
     border: #1621c9 2px solid;
