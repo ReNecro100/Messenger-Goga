@@ -71,7 +71,7 @@ body {
     border-radius: 5px;
     background-color: rgb(227, 226, 221);
     position: relative;
-    min-width: 500px;
+    min-width: 400px;
 }
 
 .window-content{
@@ -104,3 +104,14 @@ body {
 }
 
 .window-content button:hover{border: rgb(245, 192, 90) 2px solid;}
+
+/* Chto-to novoje */
+@media (max-width:1081px){
+    *{
+        font-size: 18px;
+        letter-spacing: -0.75px;
+    }
+    .window{
+        min-width: 350px;
+    }
+}

@@ -159,7 +159,7 @@ body {
 .window-content button:hover{border: rgb(245, 192, 90) 2px solid;}
 
 /* Chto-to novoje */
-@media (max-width:768px){
+@media (max-width:1081px){
     body{
         display: flex;
         flex-direction: column;
