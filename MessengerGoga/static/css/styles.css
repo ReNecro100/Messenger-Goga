@@ -109,7 +109,6 @@ body {
 @media (max-width:1081px){
     *{
         font-size: 18px;
-        letter-spacing: -0.75px;
     }
     .window{
         min-width: 350px;
